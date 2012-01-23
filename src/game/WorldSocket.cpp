@@ -666,11 +666,8 @@ int WorldSocket::ProcessIncoming(WorldPacket* new_pct)
 
     const ACE_UINT16 opcode = new_pct->GetOpcode();
 
-    if (opcode >= NUM_MSG_TYPES)
-    {
-        sLog.outError( "SESSION: received nonexistent opcode 0x%.4X", opcode);
-        return -1;
-    }
+    if (strcmp(LookupOpcodeName(new_pct->GetOpcode()), "UNKNOWN") == 0)
+        sLog.outError("SESSION: received non-existed opcode %s (0x%.4X)", LookupOpcodeName(new_pct->GetOpcode()), new_pct->GetOpcode());
 
     if (closing_)
         return -1;
