@@ -122,8 +122,12 @@ void InitOpcodeTable()
 
     // World
     OPCODE(SMSG_UPDATE_OBJECT,                STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::HandleServerSide              );
+    OPCODE(CMSG_UPDATE_OBJECT_FAILURE,        STATUS_LOGGEDIN, PROCESS_THREADUNSAFE, &WorldSession::HandleUpdateObjectFailure     );
     OPCODE(CMSG_READY_FOR_ACCOUNT_DATA_TIMES, STATUS_AUTHED,   PROCESS_THREADUNSAFE, &WorldSession::HandleReadyForAccountDataTimes);
     OPCODE(SMSG_ACCOUNT_DATA_INITIALIZED,     STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::HandleServerSide              );
+    OPCODE(CMSG_UPDATE_ACCOUNT_DATA,          STATUS_AUTHED,   PROCESS_THREADUNSAFE, &WorldSession::HandleUpdateAccountData       );
+    OPCODE(SMSG_UPDATE_ACCOUNT_DATA,          STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::HandleServerSide              );
+    OPCODE(SMSG_UPDATE_ACCOUNT_DATA_COMPLETE, STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::HandleServerSide              );
     OPCODE(CMSG_TIME_SYNC_RESPONSE,           STATUS_LOGGEDIN, PROCESS_THREADUNSAFE, &WorldSession::HandleTimeSyncResp            );
     OPCODE(SMSG_TIME_SYNC_REQ,                STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::HandleServerSide              );
     OPCODE(SMSG_POWER_UPDATE,                 STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::HandleServerSide              );

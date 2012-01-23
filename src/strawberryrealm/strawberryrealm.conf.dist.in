@@ -1,8 +1,8 @@
-############################################
-# MaNGOS realmd configuration file         #
-############################################
+####################################################
+#     StrawberryRealm realmd configuration file    #
+####################################################
 
-[RealmdConf]
+[StrawberryConf]
 ConfVersion=2010062001
 
 ###################################################################################################################
@@ -107,18 +107,18 @@ ConfVersion=2010062001
 #
 ###################################################################################################################
 
-LoginDatabaseInfo = "127.0.0.1;3306;mangos;mangos;realmd"
-LogsDir = ""
+LoginDatabaseInfo = "127.0.0.1;3306;strawberry;strawberry;realms"
+LogsDir = "Logs"
 MaxPingTime = 30
 RealmServerPort = 3724
 BindIP = "0.0.0.0"
 PidFile = ""
-LogLevel = 0
-LogTime = 0
-LogFile = "Realmd.log"
-LogTimestamp = 0
-LogFileLevel = 0
-LogColors = ""
+LogLevel = 3
+LogTime = 1
+LogFile = "StrawberryRealm.log"
+LogTimestamp = 1
+LogFileLevel = 3
+LogColors = "10 2 1 9"
 UseProcessors = 0
 ProcessPriority = 1
 WaitAtStartupError = 0

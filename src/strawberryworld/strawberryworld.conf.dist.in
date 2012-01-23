@@ -1,8 +1,8 @@
-#####################################
-# MaNGOS Configuration file         #
-#####################################
+##############################################
+#     StrawberryWorld Configuration file     #
+##############################################
 
-[MangosdConf]
+[StrawberryConf]
 ConfVersion=2010100901
 
 ###################################################################################################################
@@ -60,11 +60,11 @@ ConfVersion=2010100901
 ###################################################################################################################
 
 RealmID = 1
-DataDir = "."
-LogsDir = ""
-LoginDatabaseInfo     = "127.0.0.1;3306;mangos;mangos;realmd"
-WorldDatabaseInfo     = "127.0.0.1;3306;mangos;mangos;mangos"
-CharacterDatabaseInfo = "127.0.0.1;3306;mangos;mangos;characters"
+DataDir = "Data"
+LogsDir = "Logs"
+LoginDatabaseInfo     = "127.0.0.1;3306;strawberry;strawberry;realms"
+WorldDatabaseInfo     = "127.0.0.1;3306;strawberry;strawberry;strawberry"
+CharacterDatabaseInfo = "127.0.0.1;3306;strawberry;strawberry;characters"
 LoginDatabaseConnections = 1
 WorldDatabaseConnections = 1
 CharacterDatabaseConnections = 1
@@ -214,7 +214,7 @@ GridUnload = 1
 GridCleanUpDelay = 300000
 MapUpdateInterval = 100
 ChangeWeatherInterval = 600000
-PlayerSave.Interval = 900000
+PlayerSave.Interval = 90000
 PlayerSave.Stats.MinLevel = 0
 PlayerSave.Stats.SaveOnlyOnLogout = 1
 vmap.enableLOS = 1
@@ -362,10 +362,10 @@ Warden.Kick = 0
 LogSQL = 1
 PidFile = ""
 LogLevel = 3
-LogTime = 0
+LogTime = 1
 LogFile = "Server.log"
-LogTimestamp = 0
-LogFileLevel = 0
+LogTimestamp = 1
+LogFileLevel = 3
 LogFilter_AchievementUpdates = 1
 LogFilter_CreatureMoves = 1
 LogFilter_TransportMoves = 1
@@ -373,25 +373,25 @@ LogFilter_VisibilityChanges = 1
 LogFilter_Weather = 1
 LogFilter_DbStrictedCheck = 1
 LogFilter_Pathfinding = 1
-LogFilter_PeriodicAffects = 0
-LogFilter_PlayerMoves = 0
-LogFilter_SQLText = 0
-LogFilter_AIAndMovegens = 0
-LogFilter_PlayerStats = 0
-LogFilter_Damage = 0
-LogFilter_Combat = 0
-LogFilter_SpellCast = 0
-WorldLogFile = ""
-WorldLogTimestamp = 0
+LogFilter_PeriodicAffects = 1
+LogFilter_PlayerMoves = 1
+LogFilter_SQLText = 1
+LogFilter_AIAndMovegens = 1
+LogFilter_PlayerStats = 1
+LogFilter_Damage = 1
+LogFilter_Combat = 1
+LogFilter_SpellCast = 1
+WorldLogFile = "World.log"
+WorldLogTimestamp = 1
 DBErrorLogFile = "DBErrors.log"
 CharLogFile = "Char.log"
-CharLogTimestamp = 0
-CharLogDump = 0
-GmLogFile = ""
-GmLogTimestamp = 0
-GmLogPerAccount = 0
+CharLogTimestamp = 1
+CharLogDump = 1
+GmLogFile = "GM.log"
+GmLogTimestamp = 1
+GmLogPerAccount = 1
 RaLogFile = ""
-LogColors = ""
+LogColors = "10 2 1 9"
 WardenLogFile = "warden.log"
 
 ###################################################################################################################
@@ -839,7 +839,7 @@ PetUnsummonAtMount = 1
 ClientCacheVersion = 0
 Event.Announce = 0
 BeepAtStart = 1
-ShowProgressBars = 1
+ShowProgressBars = 0
 WaitAtStartupError = 0
 Motd = "Welcome to the Massive Network Game Object Server."
 Raid.MinLevel = 10

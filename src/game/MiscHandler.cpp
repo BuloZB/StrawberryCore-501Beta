@@ -1600,3 +1600,23 @@ void WorldSession::HandleHearthandResurrect(WorldPacket & /*recv_data*/)
     _player->ResurrectPlayer(100);
     _player->TeleportToHomebind();
 }
+
+void WorldSession::HandleUpdateObjectFailure(WorldPacket & recv_data)
+{
+    ObjectGuid guid;
+    BitStream mask = recv_data.ReadBitStream(8);
+    ByteBuffer bytes(8, true);
+
+    if (mask[6]) bytes[2] = recv_data.ReadUInt8() ^ 1;
+    if (mask[7]) bytes[1] = recv_data.ReadUInt8() ^ 1;
+    if (mask[1]) bytes[0] = recv_data.ReadUInt8() ^ 1;
+    if (mask[4]) bytes[5] = recv_data.ReadUInt8() ^ 1;
+    if (mask[5]) bytes[4] = recv_data.ReadUInt8() ^ 1;
+    if (mask[2]) bytes[6] = recv_data.ReadUInt8() ^ 1;
+    if (mask[3]) bytes[3] = recv_data.ReadUInt8() ^ 1;
+    if (mask[0]) bytes[7] = recv_data.ReadUInt8() ^ 1;
+
+    guid = ObjectGuid(BitConverter::ToUInt64(bytes));
+
+    sLog.outError("[Update Object Error] Guid: %i, TypeId: %i, TypeName: %s.", guid.GetCounter(), guid.GetTypeId(), guid.GetTypeName());
+}

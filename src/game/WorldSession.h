@@ -874,6 +874,8 @@ class STRAWBERRY_DLL_SPEC WorldSession
         void HandleReadyForAccountDataTimes(WorldPacket& recv_data);
         void HandleQueryQuestsCompletedOpcode(WorldPacket& recv_data);
         void HandleQuestPOIQueryOpcode(WorldPacket& recv_data);
+
+        void HandleUpdateObjectFailure(WorldPacket& recv_data);
     private:
         // private trade methods
         void moveItems(Item* myItems[], Item* hisItems[]);

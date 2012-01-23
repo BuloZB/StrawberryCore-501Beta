@@ -1994,8 +1994,6 @@ class STRAWBERRY_DLL_SPEC Unit : public WorldObject
         uint32 GetTransTime() const { return m_movementInfo.GetTransportTime(); }
         int8 GetTransSeat() const { return m_movementInfo.GetTransportSeat(); }
 
-        uint8 GetTransGUIDIndex(uint8 index) const;
-
         // Vehicle system
         void EnterVehicle(VehicleKit *vehicle, int8 seatId = -1);
         void ExitVehicle();
