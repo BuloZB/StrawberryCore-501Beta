@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50519
 File Encoding         : 65001
 
-Date: 2012-01-17 01:26:38
+Date: 2012-01-23 20:53:21
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -728,12 +728,11 @@ CREATE TABLE `creature` (
   PRIMARY KEY (`guid`),
   KEY `idx_map` (`map`),
   KEY `index_id` (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='Creature System';
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC COMMENT='Creature System';
 
 -- ----------------------------
 -- Records of creature
 -- ----------------------------
-INSERT INTO creature VALUES ('1', '2', '0', '1', '1', '0', '0', '-8914.57', '-133.909', '0', '80.5378', '120', '5', '0', '1', '0', '0', '0');
 
 -- ----------------------------
 -- Table structure for `creature_addon`
@@ -956,6 +955,7 @@ INSERT INTO creature_model_info VALUES ('15475', '0.383', '1.5', '1', '15476', '
 INSERT INTO creature_model_info VALUES ('15476', '0.383', '1.5', '0', '15475', '0');
 INSERT INTO creature_model_info VALUES ('16125', '1', '1.5', '0', '16126', '0');
 INSERT INTO creature_model_info VALUES ('16126', '1', '1.5', '1', '16125', '0');
+INSERT INTO creature_model_info VALUES ('1859', '0.306', '1.5', '2', '0', '0');
 
 -- ----------------------------
 -- Table structure for `creature_model_race`
@@ -1201,7 +1201,7 @@ CREATE TABLE `creature_template` (
 -- Records of creature_template
 -- ----------------------------
 INSERT INTO creature_template VALUES ('1', '0', '0', '0', '0', '0', '10045', '0', '0', '0', 'Waypoint(Only GM can see it)', 'Visual', null, '0', '1', '1', '64', '64', '0', '0', '0', '5', '35', '35', '0', '0.91', '1.14286', '1', '0', '2', '3', '0', '10', '1', '2000', '2200', '8', '4096', '0', '0', '0', '0', '0', '0', '1', '2', '100', '8', '5242886', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '', '0', '3', '1', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1', '0', '0', '0', '0', '0', '130', '');
-INSERT INTO creature_template VALUES ('2', '0', '0', '0', '0', '0', '50', '0', '0', '0', 'TestNPC', null, null, '0', '1', '1', '64', '64', '0', '0', '0', '5', '35', '35', '0', '1', '1.14286', '1', '0', '0', '0', '0', '0', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '', '0', '3', '1', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1', '0', '0', '0', '0', '0', '0', '');
+INSERT INTO creature_template VALUES ('197', '0', '0', '0', '0', '0', '1859', '0', '0', '0', 'TestNPC', null, null, '0', '1', '1', '64', '64', '0', '0', '0', '5', '12', '12', '0', '1', '1.14286', '1', '0', '0', '0', '0', '0', '1', '0', '0', '1', '768', '8', '0', '0', '0', '0', '0', '0', '0', '0', '7', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '', '0', '3', '1', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1', '0', '0', '0', '0', '0', '2', '');
 
 -- ----------------------------
 -- Table structure for `creature_template_addon`
@@ -3531,6 +3531,8 @@ INSERT INTO opcodes VALUES ('CMSG_REQUEST_CHARACTER_CREATE', '10886', '15050', '
 INSERT INTO opcodes VALUES ('CMSG_REQUEST_CHARACTER_DELETE', '14500', '15050', '15050');
 INSERT INTO opcodes VALUES ('CMSG_REQUEST_CHARACTER_ENUM', '19206', '15050', '15050');
 INSERT INTO opcodes VALUES ('CMSG_TIME_SYNC_RESPONSE', '13491', '15050', '15050');
+INSERT INTO opcodes VALUES ('CMSG_UPDATE_ACCOUNT_DATA', '672', '15050', '15050');
+INSERT INTO opcodes VALUES ('CMSG_UPDATE_OBJECT_FAILURE', '29235', '15050', '15050');
 INSERT INTO opcodes VALUES ('CMSG_ZONEUPDATE', '13824', '15050', '15050');
 INSERT INTO opcodes VALUES ('MSG_WOW_CONNECTION', '20311', '15050', '15050');
 INSERT INTO opcodes VALUES ('SMSG_ACCOUNT_DATA_INITIALIZED', '3200', '15050', '15050');
@@ -3552,6 +3554,8 @@ INSERT INTO opcodes VALUES ('SMSG_PONG', '770', '15050', '15050');
 INSERT INTO opcodes VALUES ('SMSG_POWER_UPDATE', '26790', '15050', '15050');
 INSERT INTO opcodes VALUES ('SMSG_REALM_SPLIT_MSG', '6176', '15050', '15050');
 INSERT INTO opcodes VALUES ('SMSG_TIME_SYNC_REQ', '26142', '15050', '15050');
+INSERT INTO opcodes VALUES ('SMSG_UPDATE_ACCOUNT_DATA', '7843', '15050', '15050');
+INSERT INTO opcodes VALUES ('SMSG_UPDATE_ACCOUNT_DATA_COMPLETE', '16549', '15050', '15050');
 INSERT INTO opcodes VALUES ('SMSG_UPDATE_OBJECT', '17926', '15050', '15050');
 
 -- ----------------------------

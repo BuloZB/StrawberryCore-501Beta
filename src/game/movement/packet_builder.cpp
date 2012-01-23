@@ -19,7 +19,7 @@
 
 #include "packet_builder.h"
 #include "MoveSpline.h"
-#include "WorldPacket.h"
+#include "../WorldPacket.h"
 
 namespace Movement
 {

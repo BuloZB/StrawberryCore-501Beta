@@ -362,10 +362,6 @@ void Object::BuildMovementUpdate(ByteBuffer * data, uint16 flags) const
 
    data->FlushBits();
 
-   // Byte counter
-   for (int i = 0; i < 24; i++)
-       *data << uint32(0);
-
    if((flags & UPDATEFLAG_LIVING) == 0)
   {
        *data << ((WorldObject*)this)->GetPositionZ();
