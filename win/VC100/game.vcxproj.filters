@@ -525,6 +525,9 @@
     <ClCompile Include="..\..\src\game\pchdef.cpp" />
     <ClCompile Include="..\..\src\game\WardenMac.cpp" />
     <ClCompile Include="..\..\src\game\WardenWin.cpp" />
+    <ClCompile Include="..\..\src\game\WorldPacket.cpp">
+      <Filter>World/Handlers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\game\AccountMgr.h">
@@ -997,5 +1000,8 @@
     <ClInclude Include="..\..\src\game\WardenModuleMac.h" />
     <ClInclude Include="..\..\src\game\WardenModuleWin.h" />
     <ClInclude Include="..\..\src\game\WardenWin.h" />
+    <ClInclude Include="..\..\src\game\WorldPacket.h">
+      <Filter>World/Handlers</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

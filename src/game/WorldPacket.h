@@ -63,8 +63,10 @@ class WorldPacket : public ByteBuffer
 
         uint32 GetOpcode() const { return m_opcode; }
         Opcodes GetOpcodeEnum() const { return LookupOpcodeEnum(m_opcode); }
+
         void SetOpcode(uint32 opcode) { m_opcode = opcode; }
         void SetOpcode(Opcodes enumVal) { m_opcode = LookupOpcodeNumber(enumVal); }
+        void Compress(Opcodes opcode);
 
         void ReadByteMask(uint8& b)
         {
@@ -88,5 +90,6 @@ class WorldPacket : public ByteBuffer
 
     protected:
         uint16 m_opcode;
+        void Compress(void* dst, uint32 *dst_size, const void* src, int src_size);
 };
 #endif
