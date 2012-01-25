@@ -31,7 +31,6 @@ enum ObjectUpdateType
     UPDATETYPE_CREATE_OBJECT        = 1,
     UPDATETYPE_CREATE_OBJECT2       = 2,
     UPDATETYPE_OUT_OF_RANGE_OBJECTS = 3,
-    UPDATETYPE_NEAR_OBJECTS         = 0xFF
 };
 
 enum ObjectUpdateFlags

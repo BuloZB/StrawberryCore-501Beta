@@ -230,7 +230,7 @@ void WorldSession::HandleCharEnum(QueryResult * result)
 
             counter++;
         }
-        data.WriteBits(0x0, 23); // unk counter 4.3
+        data.WriteBits(0, 23); // unk counter 4.3
         data.WriteBit(1);
 
         data.FlushBits();

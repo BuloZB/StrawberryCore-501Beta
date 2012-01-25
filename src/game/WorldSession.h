@@ -243,7 +243,7 @@ class STRAWBERRY_DLL_SPEC WorldSession
         void SendAddonsInfo();
 
         void ReadMovementInfo(WorldPacket &data, MovementInfo *mi);
-        void WriteMovementInfo(WorldPacket *data, MovementInfo *mi);
+        void WriteMovementInfo(WorldPacket &data, MovementInfo *mi);
 
         void SendPacket(WorldPacket const* packet);
         void SendNotification(const char *format,...) ATTR_PRINTF(2,3);

@@ -154,5 +154,5 @@ void InitOpcodeTable()
     //OPCODE(SMSG_COMPRESSED_UPDATE_OBJECT,     STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::HandleServerSide              );
 
     // Movement
-    OPCODE(SMSG_PLAYER_MOVE,                  STATUS_NEVER,    PROCESS_INPLACE,      &WorldSession::HandleServerSide              );
+    OPCODE(SMSG_PLAYER_MOVE,                  STATUS_AUTHED,   PROCESS_INPLACE,      &WorldSession::HandleServerSide              );
 };
