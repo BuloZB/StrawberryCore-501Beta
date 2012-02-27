@@ -410,13 +410,13 @@ class STRAWBERRY_DLL_SPEC WorldSession
         void HandleServerSide(WorldPacket& recvPacket);    // sever side only, can't be accepted from client
         void Handle_Deprecated(WorldPacket& recvPacket);    // never used anymore by client
 
-        void HandleCharEnumOpcode(WorldPacket& recvPacket);
+        void HandleResponseCharacterEnumOpcode(WorldPacket& recvPacket);
         void HandleCharDeleteOpcode(WorldPacket& recvPacket);
-        void HandleCharCreateOpcode(WorldPacket& recvPacket);
+        void HandleResponseCharacterCreateOpcode(WorldPacket& recvPacket);
 
         void HandleLoadingScreenNotify(WorldPacket& recvPacket);
         void HandlePlayerLoginOpcode(WorldPacket& recvPacket);
-        void HandleCharEnum(QueryResult * result);
+        void HandleResponseCharacterEnum(QueryResult * result);
         void HandlePlayerLogin(LoginQueryHolder * holder);
 
         // played time
@@ -896,7 +896,7 @@ class STRAWBERRY_DLL_SPEC WorldSession
 
         // this stores the GUIDs of the characters who can login
         // characters who failed on Player::BuildEnumData shouldn't login
-        std::set<uint32> _allowedCharsToLogin;
+        std::set<uint64> _allowedCharsToLogin;
 
         uint32 m_GUIDLow;                                   // set logged or recently logout player (while m_playerRecentlyLogout set)
         Player *_player;

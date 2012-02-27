@@ -114,7 +114,7 @@ bool LoginQueryHolder::Initialize()
 class CharacterHandler
 {
     public:
-        void HandleCharEnumCallback(QueryResult * result, uint32 account)
+        void HandleResponseCharacterEnumCallback(QueryResult * result, uint32 account)
         {
             WorldSession * session = sWorld.FindSession(account);
             if(!session)
@@ -122,7 +122,7 @@ class CharacterHandler
                 delete result;
                 return;
             }
-            session->HandleCharEnum(result);
+            session->HandleResponseCharacterEnum(result);
         }
         void HandlePlayerLoginCallback(QueryResult * /*dummy*/, SqlQueryHolder * holder)
         {
@@ -143,9 +143,14 @@ struct charEnumInfo
     bool firstLogin;
 };
 
-void WorldSession::HandleCharEnum(QueryResult * result)
+void WorldSession::HandleResponseCharacterEnum(QueryResult * result)
 {
-    WorldPacket data(SMSG_CHAR_ENUM, 270);
+    WorldPacket data(SMSG_RESPONSE_CHARACTER_ENUM, 270);
+    
+    uint8 charCount = 0;
+    ByteBuffer buffer;
+
+    data.WriteBits(0, 23);
     data.WriteBits(result ? (*result).GetRowCount() : 0 , 17);
 
     std::vector<charEnumInfo> charInfoList;
@@ -153,16 +158,15 @@ void WorldSession::HandleCharEnum(QueryResult * result)
 
     if (result)
     {
-        typedef std::pair<uint32, uint32> Guids;
+        typedef std::pair<uint64, uint64> Guids;
         std::vector<Guids> guidsVect;
-        ByteBuffer buffer;
         _allowedCharsToLogin.clear();
-        int charCount = 0;
+
         do
         {
-            uint32 GuidLow = (*result)[0].GetUInt32();
+            uint64 GuidLow = (*result)[0].GetUInt64();
             uint32 atLoginFlags = (*result)[15].GetUInt32();
-            uint64 GuildGuid = (*result)[13].GetUInt32();//TODO: store as uin64
+            uint64 GuildGuid = (*result)[13].GetUInt64();
 
             charEnumInfo charInfo = charEnumInfo();
             std::string name = (*result)[1].GetString();
@@ -178,7 +182,7 @@ void WorldSession::HandleCharEnum(QueryResult * result)
 
             if (!Player::BuildEnumData(result, &buffer))
             {
-                sLog.outError("Building enum data for SMSG_CHAR_ENUM has failed, aborting");
+                sLog.outError("Building enum data for SMSG_RESPONSE_CHARACTER_ENUM has failed, aborting");
                 return;
             }
             _allowedCharsToLogin.insert(GuidLow);
@@ -188,57 +192,41 @@ void WorldSession::HandleCharEnum(QueryResult * result)
         int counter = 0;
         for (std::vector<Guids>::iterator itr = guidsVect.begin(); itr != guidsVect.end(); ++itr)
         {
-            uint32 GuidLow = (*itr).first;
+            uint64 Guid = (*itr).first;
             uint64 GuildGuid = (*itr).second;
 
-            uint8 Guid0 = uint8(GuidLow);
-            uint8 Guid1 = uint8(GuidLow >> 8);
-            uint8 Guid2 = uint8(GuidLow >> 16);
-            uint8 Guid3 = uint8(GuidLow >> 24);
+            uint8 guidMask[8] = { 3, 0, 2, 6, 5, 7, 1, 4 };
+            uint8 guildGuidMask[8] = { 0, 6, 3, 2, 5, 7, 1, 4 };
 
-            for (uint8 i = 0; i < 18; ++i) 
-            {
-                switch(i)
-                {
-                    // guidlow[0]
-                case 10:
-                    data.WriteBit(Guid0 ? 1 : 0);
-                    break;
-                    // guidlow[1]
-                case 12:
-                    data.WriteBit(Guid1 ? 1 : 0);
-                    break;
-                    // guidlow[2]
-                case 1:
-                    data.WriteBit(Guid2 ? 1 : 0);
-                    break;
-                    // guidlow[3]
-                case 11:
-                    data.WriteBit(Guid3 ? 1 : 0);
-                    break;
-                case 8:
-                    data.WriteBits(charInfoList[counter].nameLenghts, 7);
-                    break;
-                case 13:
-                    data.WriteBit(charInfoList[counter].firstLogin ? 1 : 0);
-                    break;
-                default:
-                    data.WriteBit(0);
-                    break;
-                }
-            }
+            data.WriteGuidMask(Guid, guidMask, 1, 0);
+            data.WriteGuidMask(GuildGuid, guildGuidMask, 1, 0);
+            data.WriteGuidMask(Guid, guidMask, 1, 1);
+            data.WriteGuidMask(GuildGuid, guildGuidMask, 1, 1);
+
+            data.WriteBit(charInfoList[counter].firstLogin ? 1 : 0);
+
+            data.WriteGuidMask(Guid, guidMask, 2, 2);
+
+            data.WriteBits(charInfoList[counter].nameLenghts, 7);
+
+            data.WriteGuidMask(Guid, guidMask, 1, 4);
+            data.WriteGuidMask(GuildGuid, guildGuidMask, 2, 2);
+            data.WriteGuidMask(Guid, guidMask, 1, 5);
+            data.WriteGuidMask(GuildGuid, guildGuidMask, 2, 4);
+            data.WriteGuidMask(Guid, guidMask, 1, 6);
+            data.WriteGuidMask(GuildGuid, guildGuidMask, 1, 6);
+            data.WriteGuidMask(Guid, guidMask, 1, 7);
+            data.WriteGuidMask(GuildGuid, guildGuidMask, 1, 7);
 
             counter++;
         }
-        data.WriteBits(0, 23); // unk counter 4.3
-        data.WriteBit(1);
 
+        data.WriteBit(1);
         data.FlushBits();
         data.append(buffer);
     }
     else
     {
-        data.WriteBits(0x0, 23);
         data.WriteBit(1);
         data.FlushBits();
     }
@@ -246,10 +234,10 @@ void WorldSession::HandleCharEnum(QueryResult * result)
     SendPacket(&data);
 }
 
-void WorldSession::HandleCharEnumOpcode( WorldPacket & /*recv_data*/ )
+void WorldSession::HandleResponseCharacterEnumOpcode( WorldPacket & /*recv_data*/ )
 {
     /// get all the data necessary for loading all characters (along with their pets) on the account
-    CharacterDatabase.AsyncPQuery(&chrHandler, &CharacterHandler::HandleCharEnumCallback, GetAccountId(),
+    CharacterDatabase.AsyncPQuery(&chrHandler, &CharacterHandler::HandleResponseCharacterEnumCallback, GetAccountId(),
          !sWorld.getConfig(CONFIG_BOOL_DECLINED_NAMES_USED) ?
     //   ------- Query Without Declined Names --------
     //           0               1                2                3                 4                  5                       6                        7
@@ -276,7 +264,7 @@ void WorldSession::HandleCharEnumOpcode( WorldPacket & /*recv_data*/ )
         PET_SAVE_AS_CURRENT, GetAccountId());
 }
 
-void WorldSession::HandleCharCreateOpcode( WorldPacket & recv_data )
+void WorldSession::HandleResponseCharacterCreateOpcode( WorldPacket & recv_data )
 {
     std::string name;
     uint8 race_, class_;
@@ -291,7 +279,7 @@ void WorldSession::HandleCharCreateOpcode( WorldPacket & recv_data )
     recv_data >> gender >> skin >> face;
     recv_data >> hairStyle >> hairColor >> facialHair >> outfitId;
 
-    WorldPacket data(SMSG_CHAR_CREATE, 1);                  // returned with diff.values in all cases
+    WorldPacket data(SMSG_RESPONSE_CHARACTER_CREATE, 1);                  // returned with diff.values in all cases
 
     if(GetSecurity() == SEC_PLAYER)
     {
@@ -632,7 +620,6 @@ void WorldSession::HandleLoadingScreenNotify(WorldPacket& recv_data)
     sLog.outDebug("WORLD: Recvd Loading Screen Notify Message");
 
     recv_data.read_skip<uint8>();
-    recv_data.FlushBits();
     recv_data.read_skip<uint32>();    // Map id
 }
 
@@ -653,15 +640,14 @@ void WorldSession::HandlePlayerLoginOpcode( WorldPacket & recv_data )
 
     ByteBuffer bytes(8, true);
 
-    if(mask[3]) bytes[4] = recv_data.ReadUInt8()^1;
-    if(mask[7]) bytes[1] = recv_data.ReadUInt8()^1;
-    if(mask[4]) bytes[7] = recv_data.ReadUInt8()^1;
-    if(mask[6]) bytes[2] = recv_data.ReadUInt8()^1;
-    if(mask[5]) bytes[6] = recv_data.ReadUInt8()^1;
-    if(mask[1]) bytes[5] = recv_data.ReadUInt8()^1;
-    if(mask[2]) bytes[3] = recv_data.ReadUInt8()^1;
-    if(mask[0]) bytes[0] = recv_data.ReadUInt8()^1;
-
+    if (mask[5]) bytes[1] = recv_data.ReadUInt8() ^ 1;
+    if (mask[2]) bytes[4] = recv_data.ReadUInt8() ^ 1;
+    if (mask[1]) bytes[7] = recv_data.ReadUInt8() ^ 1;
+    if (mask[7]) bytes[2] = recv_data.ReadUInt8() ^ 1;
+    if (mask[6]) bytes[3] = recv_data.ReadUInt8() ^ 1;
+    if (mask[0]) bytes[6] = recv_data.ReadUInt8() ^ 1;
+    if (mask[4]) bytes[0] = recv_data.ReadUInt8() ^ 1;
+    if (mask[3]) bytes[5] = recv_data.ReadUInt8() ^ 1;
 
     playerGuid = BitConverter::ToUInt64(bytes);
 

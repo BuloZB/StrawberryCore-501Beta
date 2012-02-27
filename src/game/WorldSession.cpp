@@ -622,8 +622,8 @@ void WorldSession::SendAuthWaitQue(uint32 position)
     {
         WorldPacket packet( SMSG_AUTH_RESPONSE, 1+4+1 );
         packet << uint8(AUTH_WAIT_QUEUE);
-        packet << uint32(position);
         packet << uint8(0);                                 // unk 3.3.0
+        packet << uint32(position);
         SendPacket(&packet);
     }
 }

@@ -1479,7 +1479,9 @@ bool Player::BuildEnumData( QueryResult * result, ByteBuffer * p_data )
 
     Field *fields = result->Fetch();
 
-    uint32 GuidLow = fields[0].GetUInt32();
+    uint64 Guid = fields[0].GetUInt64();
+    uint64 GuildGuid = fields[13].GetUInt64();
+
     uint8 pRace = fields[2].GetUInt8();
     uint8 pClass = fields[3].GetUInt8();
     uint8 gender = fields[4].GetUInt8();
@@ -1492,10 +1494,9 @@ bool Player::BuildEnumData( QueryResult * result, ByteBuffer * p_data )
     uint32 petLevel   = 0;
     uint32 petFamily  = 0;
     uint32 char_flags = 0;
-    uint8 Guid0 = uint8(GuidLow);
-    uint8 Guid1 = uint8(GuidLow >> 8);
-    uint8 Guid2 = uint8(GuidLow >> 16);
-    uint8 Guid3 = uint8(GuidLow >> 24);
+
+    uint8 guidBytes[8] = { 0, 2, 7, 3, 4, 6, 1, 5 };
+    uint8 guildGuidBytes[8] = { 0, 3, 4, 1, 7, 2, 6, 5 };
 
     // show pet at selection character in character list only for non-ghost character
     if (result && !(playerFlags & PLAYER_FLAGS_GHOST) && (pClass == CLASS_WARLOCK || pClass == CLASS_HUNTER || pClass == CLASS_DEATH_KNIGHT))
@@ -1530,7 +1531,7 @@ bool Player::BuildEnumData( QueryResult * result, ByteBuffer * p_data )
     PlayerInfo const *info = sObjectMgr.GetPlayerInfo(pRace, pClass);
     if(!info)
     {
-        sLog.outError("Player %u has incorrect race/class pair. Don't build enum.", GuidLow);
+        sLog.outError("Player %u has incorrect race/class pair. Don't build enum.", Guid);
         return false;
     }
 
@@ -1542,9 +1543,9 @@ bool Player::BuildEnumData( QueryResult * result, ByteBuffer * p_data )
         const ItemPrototype * proto = ObjectMgr::GetItemPrototype(item_id);
         if(!proto)
         {
+            *p_data << uint32(0);
+            *p_data << uint32(0);
             *p_data << uint8(0);
-            *p_data << uint32(0);
-            *p_data << uint32(0);
             continue;
         }
 
@@ -1562,61 +1563,76 @@ bool Player::BuildEnumData( QueryResult * result, ByteBuffer * p_data )
                 break;
         }
 
-        *p_data << uint8(proto->InventoryType);
-        *p_data << uint32(proto->DisplayInfoID);
         *p_data << uint32(enchant ? enchant->aura_id : 0);
+        *p_data << uint32(proto->DisplayInfoID);
+        *p_data << uint8(proto->InventoryType);
     }
 
     for (int32 i = 0; i < 4; i++)
     {
+        *p_data << uint32(0);
+        *p_data << uint32(0);
         *p_data << uint8(0);
-        *p_data << uint32(0);
-        *p_data << uint32(0);
     }
 
-    uint32 playerBytes2 = fields[6].GetUInt32();
-    *p_data << uint8(playerBytes >> 8);                     // face
-    *p_data << uint32(petDisplayId);                        // Pet DisplayID
+    p_data->WriteGuidBytes(Guid, guildGuidBytes, 1, 0);
 
-    *p_data << uint8(gender);                               // Gender
-    *p_data << uint8(level);                                // Level
-    *p_data << uint32(petLevel);                            // pet level
     *p_data << uint32(zone);                                // Zone id
-    *p_data << fields[11].GetFloat();                       // y
-    *p_data << uint32(petFamily);                           // Pet Family
-    *p_data << uint8(playerBytes >> 16);                    // Hair style
-
-    if (Guid1)
-        *p_data << uint8(Guid1^1);
-
-    p_data->append(fields[1].GetCppString().c_str(), fields[1].GetCppString().size());
-    
-    if (Guid0)
-        *p_data << uint8(Guid0^1);
-
-    *p_data << uint8(pRace);                              // Race
-    *p_data << uint8(0);                                       // char order id
-    *p_data << fields[12].GetFloat();                          // z
-    *p_data << uint32(fields[9].GetUInt32());                  // map
-    *p_data << uint8(playerBytes >> 24);                      // Hair color
-
-    if (Guid3)
-        *p_data << uint8(Guid3^1);
-
+    *p_data << uint32(petLevel);                            // pet level
     *p_data << uint32(char_flags);                          // character flags
-    *p_data << uint8(playerBytes);                          // skin
 
-    // character customize flags
-    *p_data << uint32(atLoginFlags & AT_LOGIN_CUSTOMIZE ? CHAR_CUSTOMIZE_FLAG_CUSTOMIZE : CHAR_CUSTOMIZE_FLAG_NONE);
+    p_data->WriteGuidBytes(Guid, guildGuidBytes, 1, 1);
+
+    uint32 playerBytes2 = fields[6].GetUInt32();
+    *p_data << uint8(playerBytes2 & 0xFF);                  // facial hair
+
+    p_data->WriteGuidBytes(Guid, guidBytes, 3, 0);
+
+    *p_data << uint8(0);                                    // char order id
+
+    p_data->WriteGuidBytes(Guid, guildGuidBytes, 2, 2);
+
+    *p_data << uint32(petFamily);                           // Pet Family
+
+    p_data->WriteGuidBytes(Guid, guidBytes, 2, 3);
+
+    *p_data << uint8(pClass);                               // class
+
+    p_data->WriteGuidBytes(Guid, guidBytes, 1, 5);
 
     *p_data << fields[10].GetFloat();                       // x
 
-    *p_data << uint8(playerBytes2 & 0xFF);                  // facial hair
+    p_data->WriteGuidBytes(Guid, guidBytes, 1, 6);
 
-    if (Guid2)
-        *p_data << uint8(Guid2^1);
+    *p_data << uint8(pRace);                                // Race
+    *p_data << uint32(petDisplayId);                        // Pet DisplayID
 
-    *p_data << uint8(pClass);                          // class
+    *p_data << fields[11].GetFloat();                       // y
+
+    *p_data << uint8(gender);                               // Gender
+
+    p_data->WriteGuidBytes(Guid, guildGuidBytes, 2, 4);
+
+    *p_data << uint8(playerBytes >> 16);                    // Hair style
+    *p_data << uint8(level);                                // Level
+
+    p_data->WriteGuidBytes(Guid, guildGuidBytes, 1, 6);
+
+    *p_data << fields[12].GetFloat();                       // z
+
+    // character customize flags
+    *p_data << uint32(atLoginFlags & AT_LOGIN_CUSTOMIZE ? CHAR_CUSTOMIZE_FLAG_CUSTOMIZE : CHAR_CUSTOMIZE_FLAG_NONE);
+    
+    *p_data << uint8(playerBytes);                          // skin
+
+    p_data->WriteGuidBytes(Guid, guidBytes, 1, 7);
+    p_data->WriteGuidBytes(Guid, guildGuidBytes, 1, 7);
+
+    *p_data << uint8(playerBytes >> 24);                    // Hair color
+    *p_data << uint8(playerBytes >> 8);                     // face
+    *p_data << uint32(fields[9].GetUInt32());               // map
+
+    p_data->append(fields[1].GetCppString().c_str(), fields[1].GetCppString().size());
 
     return true;
 }

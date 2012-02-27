@@ -28,7 +28,7 @@
 
 #ifndef _VERSION
 #if PLATFORM == PLATFORM_WINDOWS
-# define _VERSION(REVD,REVT,REVN,REVH) "Strawberry 4.3.0 - DEV" " (" REVD " " REVT " Revision " REVN " - " REVH ")"
+# define _VERSION(REVD,REVT,REVN,REVH) "Strawberry 4.3.3 - DEV" " (" REVD " " REVT " Revision " REVN " - " REVH ")"
 #else
 # define _VERSION(REVD,REVT,REVN,REVH) "@VERSION@" " (" REVD " " REVT " Revision " REVN " - " REVH ")"
 #endif
