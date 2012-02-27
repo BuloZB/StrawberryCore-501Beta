@@ -1479,7 +1479,7 @@ bool Player::BuildEnumData( QueryResult * result, ByteBuffer * p_data )
 
     Field *fields = result->Fetch();
 
-    uint64 Guid = fields[0].GetUInt64();
+    uint32 Guid = fields[0].GetUInt64();
     uint64 GuildGuid = fields[13].GetUInt64();
 
     uint8 pRace = fields[2].GetUInt8();
@@ -1495,8 +1495,10 @@ bool Player::BuildEnumData( QueryResult * result, ByteBuffer * p_data )
     uint32 petFamily  = 0;
     uint32 char_flags = 0;
 
-    uint8 guidBytes[8] = { 0, 2, 7, 3, 4, 6, 1, 5 };
-    uint8 guildGuidBytes[8] = { 0, 3, 4, 1, 7, 2, 6, 5 };
+    uint8 Guid0 = uint8(Guid);
+    uint8 Guid1 = uint8(Guid >> 8);
+    uint8 Guid2 = uint8(Guid >> 16);
+    uint8 Guid3 = uint8(Guid >> 24);
 
     // show pet at selection character in character list only for non-ghost character
     if (result && !(playerFlags & PLAYER_FLAGS_GHOST) && (pClass == CLASS_WARLOCK || pClass == CLASS_HUNTER || pClass == CLASS_DEATH_KNIGHT))
@@ -1575,34 +1577,32 @@ bool Player::BuildEnumData( QueryResult * result, ByteBuffer * p_data )
         *p_data << uint8(0);
     }
 
-    p_data->WriteGuidBytes(Guid, guildGuidBytes, 1, 0);
-
     *p_data << uint32(zone);                                // Zone id
     *p_data << uint32(petLevel);                            // pet level
     *p_data << uint32(char_flags);                          // character flags
 
-    p_data->WriteGuidBytes(Guid, guildGuidBytes, 1, 1);
-
     uint32 playerBytes2 = fields[6].GetUInt32();
     *p_data << uint8(playerBytes2 & 0xFF);                  // facial hair
 
-    p_data->WriteGuidBytes(Guid, guidBytes, 3, 0);
+    if (Guid0)
+        *p_data << uint8(Guid0 ^ 1);
+
+    if (Guid2)
+        *p_data << uint8(Guid2 ^ 1);
 
     *p_data << uint8(0);                                    // char order id
 
-    p_data->WriteGuidBytes(Guid, guildGuidBytes, 2, 2);
-
     *p_data << uint32(petFamily);                           // Pet Family
 
-    p_data->WriteGuidBytes(Guid, guidBytes, 2, 3);
+    if (Guid3)
+        *p_data << uint8(Guid3 ^ 1);
 
     *p_data << uint8(pClass);                               // class
 
-    p_data->WriteGuidBytes(Guid, guidBytes, 1, 5);
-
     *p_data << fields[10].GetFloat();                       // x
 
-    p_data->WriteGuidBytes(Guid, guidBytes, 1, 6);
+    if (Guid1)
+        *p_data << uint8(Guid1 ^ 1);
 
     *p_data << uint8(pRace);                                // Race
     *p_data << uint32(petDisplayId);                        // Pet DisplayID
@@ -1611,12 +1611,8 @@ bool Player::BuildEnumData( QueryResult * result, ByteBuffer * p_data )
 
     *p_data << uint8(gender);                               // Gender
 
-    p_data->WriteGuidBytes(Guid, guildGuidBytes, 2, 4);
-
     *p_data << uint8(playerBytes >> 16);                    // Hair style
     *p_data << uint8(level);                                // Level
-
-    p_data->WriteGuidBytes(Guid, guildGuidBytes, 1, 6);
 
     *p_data << fields[12].GetFloat();                       // z
 
@@ -1624,9 +1620,6 @@ bool Player::BuildEnumData( QueryResult * result, ByteBuffer * p_data )
     *p_data << uint32(atLoginFlags & AT_LOGIN_CUSTOMIZE ? CHAR_CUSTOMIZE_FLAG_CUSTOMIZE : CHAR_CUSTOMIZE_FLAG_NONE);
     
     *p_data << uint8(playerBytes);                          // skin
-
-    p_data->WriteGuidBytes(Guid, guidBytes, 1, 7);
-    p_data->WriteGuidBytes(Guid, guildGuidBytes, 1, 7);
 
     *p_data << uint8(playerBytes >> 24);                    // Hair color
     *p_data << uint8(playerBytes >> 8);                     // face

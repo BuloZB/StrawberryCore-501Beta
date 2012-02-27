@@ -192,31 +192,41 @@ void WorldSession::HandleResponseCharacterEnum(QueryResult * result)
         int counter = 0;
         for (std::vector<Guids>::iterator itr = guidsVect.begin(); itr != guidsVect.end(); ++itr)
         {
-            uint64 Guid = (*itr).first;
+            uint32 Guid = (*itr).first;
             uint64 GuildGuid = (*itr).second;
 
-            uint8 guidMask[8] = { 3, 0, 2, 6, 5, 7, 1, 4 };
-            uint8 guildGuidMask[8] = { 0, 6, 3, 2, 5, 7, 1, 4 };
+            uint8 Guid0 = uint8(Guid);
+            uint8 Guid1 = uint8(Guid >> 8);
+            uint8 Guid2 = uint8(Guid >> 16);
+            uint8 Guid3 = uint8(Guid >> 24);
 
-            data.WriteGuidMask(Guid, guidMask, 1, 0);
-            data.WriteGuidMask(GuildGuid, guildGuidMask, 1, 0);
-            data.WriteGuidMask(Guid, guidMask, 1, 1);
-            data.WriteGuidMask(GuildGuid, guildGuidMask, 1, 1);
-
-            data.WriteBit(charInfoList[counter].firstLogin ? 1 : 0);
-
-            data.WriteGuidMask(Guid, guidMask, 2, 2);
-
-            data.WriteBits(charInfoList[counter].nameLenghts, 7);
-
-            data.WriteGuidMask(Guid, guidMask, 1, 4);
-            data.WriteGuidMask(GuildGuid, guildGuidMask, 2, 2);
-            data.WriteGuidMask(Guid, guidMask, 1, 5);
-            data.WriteGuidMask(GuildGuid, guildGuidMask, 2, 4);
-            data.WriteGuidMask(Guid, guidMask, 1, 6);
-            data.WriteGuidMask(GuildGuid, guildGuidMask, 1, 6);
-            data.WriteGuidMask(Guid, guidMask, 1, 7);
-            data.WriteGuidMask(GuildGuid, guildGuidMask, 1, 7);
+            for (int i = 0; i < 18; ++i)
+            {
+                switch (i)
+                {
+                    case 0:
+                        data.WriteBit(Guid0 ? 1 : 0);
+                        break;
+                    case 15:
+                        data.WriteBit(Guid1 ? 1 : 0);
+                        break;
+                    case 5:
+                        data.WriteBit(Guid2 ? 1 : 0);
+                        break;
+                    case 2:
+                        data.WriteBit(Guid3 ? 1 : 0);
+                        break;
+                    case 7:
+                        data.WriteBits(charInfoList[counter].nameLenghts, 7);
+                        break;
+                    case 4:
+                        data.WriteBit(charInfoList[counter].firstLogin ? 1 : 0);
+                        break;
+                    default:
+                        data.WriteBit(0);
+                        break;
+                }
+            }
 
             counter++;
         }
