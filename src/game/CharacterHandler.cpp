@@ -619,8 +619,8 @@ void WorldSession::HandleLoadingScreenNotify(WorldPacket& recv_data)
 {
     sLog.outDebug("WORLD: Recvd Loading Screen Notify Message");
 
-    recv_data.read_skip<uint8>();
     recv_data.read_skip<uint32>();    // Map id
+    recv_data.read_skip<uint8>();
 }
 
 void WorldSession::HandlePlayerLoginOpcode( WorldPacket & recv_data )
