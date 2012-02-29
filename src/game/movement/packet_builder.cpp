@@ -152,19 +152,20 @@ namespace Movement
         uint32 nodes = move_spline.getPath().size();
 
         data.WriteBit(false);
-        data.WriteBits(SPLINEFLAG_GLIDE, 25);
         data.WriteBits(SPLINEMODE_LINEAR, 2);
         data.WriteBit(false);
-        data.WriteBits(nodes, 22);
         data.WriteBits(SPLINETYPE_NORMAL, 2);
 
         MoveSplineFlag splineFlags = move_spline.splineflags;
 
         if (splineFlags.walkmode)
         {
-            uint8 guidMask[] = { 7, 3, 4, 2, 1, 6, 0, 5 };
+            uint8 guidMask[] = { 0, 2, 7, 1, 6, 3, 4, 5 };
             data.WriteGuidMask(move_spline.facing.target, guidMask, 8);
         }
+
+        data.WriteBits(SPLINEFLAG_GLIDE, 25);
+        data.WriteBits(nodes, 22);
     }
 
     void PacketBuilder::WriteData(const MoveSpline& move_spline, ByteBuffer& data)

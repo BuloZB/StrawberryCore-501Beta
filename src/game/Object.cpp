@@ -235,22 +235,20 @@ void Object::DestroyForPlayer( Player *target, bool anim ) const
 
 void Object::BuildMovementUpdate(ByteBuffer * data, uint16 flags) const
 {
-    uint64 mGuid = uint64(((Unit*)this)->GetObjectGuid());
-    uint8 mGuidMask[] = { 2, 1, 4, 3, 0 };
+    uint64 mGuid = uint64(((Unit*)this)->GetObjectGuid()); 
+    uint8 mGuidMask[] = { 1, 4, 2, 0, 3};
 
-    data->WriteBit(flags & UPDATEFLAG_HAS_ATTACKING_TARGET);
-    data->WriteGuidMask(mGuid, mGuidMask, 1, 0);
-    data->WriteBit(flags & UPDATEFLAG_VEHICLE);
-    data->WriteGuidMask(mGuid, mGuidMask, 3, 1);
-    data->WriteBit(flags & UPDATEFLAG_TRANSPORT);
-    data->WriteBit(false);                                  // flags & UPDATEFLAG_HAS_POSITION
-    data->WriteBit(false);
-    data->WriteBit(flags & UPDATEFLAG_UNK4);                // AnimKits
-    data->WriteBit(flags & UPDATEFLAG_ROTATION);
     data->WriteBit(flags & UPDATEFLAG_LIVING);
+    data->WriteBit(flags & UPDATEFLAG_HAS_ATTACKING_TARGET);
+    data->WriteBit(flags & UPDATEFLAG_VEHICLE);
+    data->WriteBits(0, 24);
     data->WriteBit((flags & UPDATEFLAG_LIVING) == 0);
-    data->WriteBits(0, 24);                                 // Byte Counter
-    data->WriteGuidMask(mGuid, mGuidMask, 1, 4);
+    data->WriteGuidMask(mGuid, mGuidMask, 2, 0);
+    data->WriteBit(flags & UPDATEFLAG_TRANSPORT);
+    data->WriteBit(false);
+    data->WriteGuidMask(mGuid, mGuidMask, 2, 3);
+    data->WriteBit(false); // flags & UPDATEFLAG_HAS_POSITION
+    data->WriteBit(flags & UPDATEFLAG_ROTATION);
 
     // 0x20
     if (flags & UPDATEFLAG_LIVING)
@@ -258,37 +256,19 @@ void Object::BuildMovementUpdate(ByteBuffer * data, uint16 flags) const
         Unit* unit = ((Unit*)this);
         Player *player = ((Player*)unit);
 
-        bool isTransport = ((Unit*)this)->m_movementInfo.GetMovementFlags() & MOVEFLAG_ONTRANSPORT;
-        data->WriteBit(isTransport);
-
-        if(isTransport)
-        {
-            uint64 tGuid = uint64(unit->GetTransport()->GetObjectGuid());
-            uint8 tGuidMask[] = { 2, 7, 5, 3, 0, 4, 1, 6 };
-
-            data->WriteGuidMask(tGuid, tGuidMask, 3, 0);
-            data->WriteBit(false);
-            data->WriteGuidMask(tGuid, tGuidMask, 4, 3);
-            data->WriteBit(((Unit*)this)->m_movementInfo.GetMovementFlags2() & MOVEFLAG2_INTERP_TURNING);
-            data->WriteGuidMask(tGuid, tGuidMask, 1, 7);
-        }
-
-        data->WriteBit(player && player->isInFlight());
-
         uint64 pGuid = uint64(((Player*)this)->GetObjectGuid());
-        uint8 pGuidMask[] = { 7, 6, 5, 2, 4, 1, 3, 0 };
+        uint8 pGuidMask[] = { 4, 5, 6, 1, 2, 7, 0, 3 };
 
-        data->WriteGuidMask(pGuid, pGuidMask, 5, 0);
-        data->WriteBit(!(unit->m_movementInfo.GetMovementFlags()));
-
-        data->WriteGuidMask(pGuid, pGuidMask, 1, 4);
-
+        data->WriteGuidMask(pGuid, pGuidMask, 1, 0);
+        data->WriteBit(false);
+        data->WriteGuidMask(pGuid, pGuidMask, 1, 1);
         data->WriteBit(false);
         data->WriteBit(false);
-        data->WriteBit(!unit->m_movementInfo.GetMovementFlags2());
+        data->WriteBit(false);
+        data->WriteGuidMask(pGuid, pGuidMask, 1, 2);
 
         bool isSplineEnabled = unit->m_movementInfo.GetMovementFlags() & MOVEFLAG_SPLINE_ENABLED;
-        
+
         if (player && player->isInFlight())
         {
             data->WriteBit(isSplineEnabled);
@@ -296,6 +276,55 @@ void Object::BuildMovementUpdate(ByteBuffer * data, uint16 flags) const
             if (isSplineEnabled)
                 Movement::PacketBuilder::WriteBytes(*unit->movespline, *data);
         }
+
+        data->WriteGuidMask(pGuid, pGuidMask, 1, 3);
+        data->WriteBit(false);
+
+        bool isTransport = ((Unit*)this)->m_movementInfo.GetMovementFlags() & MOVEFLAG_ONTRANSPORT;
+
+        if(data->WriteBit(isTransport))
+        {
+            uint64 tGuid = uint64(unit->GetTransport()->GetObjectGuid());
+            uint8 tGuidMask[] = { 0, 7, 2, 6, 5, 4, 1, 3 };
+
+            data->WriteBit(((Unit*)this)->m_movementInfo.GetMovementFlags2() & MOVEFLAG2_INTERP_TURNING);
+            data->WriteGuidMask(tGuid, tGuidMask, 8);
+            data->WriteBit(false);
+        }
+
+        data->WriteGuidMask(pGuid, pGuidMask, 1, 4);
+
+        if(unit->m_movementInfo.GetMovementFlags2())
+            data->WriteBits(((Unit*)this)->m_movementInfo.GetMovementFlags2(), 12);
+
+        data->WriteBit(!(unit->m_movementInfo.GetMovementFlags()));
+        data->WriteBit(!unit->m_movementInfo.GetMovementFlags2());
+
+        data->WriteBit(false);
+
+        data->WriteGuidMask(pGuid, pGuidMask, 2, 5);
+
+        if(unit->m_movementInfo.GetMovementFlags())
+            data->WriteBits(((Unit*)this)->m_movementInfo.GetMovementFlags(), 30);
+
+        data->WriteGuidMask(pGuid, pGuidMask, 1, 7);
+        data->WriteBit(false);
+
+
+        data->WriteBit(player && player->isInFlight());
+
+        
+
+        data->WriteGuidMask(pGuid, pGuidMask, 5, 0);
+        data->WriteBit(!(unit->m_movementInfo.GetMovementFlags()));
+
+        data->WriteGuidMask(pGuid, pGuidMask, 1, 4);
+
+        
+        
+        data->WriteBit(!unit->m_movementInfo.GetMovementFlags2());
+
+        
 
         data->WriteGuidMask(pGuid, pGuidMask, 1, 6);
 
@@ -311,8 +340,6 @@ void Object::BuildMovementUpdate(ByteBuffer * data, uint16 flags) const
         data->WriteBit(!swimming);
         data->WriteBit(interPolatedTurning);
 
-        if(unit->m_movementInfo.GetMovementFlags2())
-            data->WriteBits(((Unit*)this)->m_movementInfo.GetMovementFlags2(), 12);
 
         data->WriteGuidMask(pGuid, pGuidMask, 1, 7);
 
