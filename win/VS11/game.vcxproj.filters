@@ -255,9 +255,6 @@
     <ClCompile Include="..\..\src\game\UpdateData.cpp">
       <Filter>World/Handlers</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\game\VehicleHandler.cpp">
-      <Filter>World/Handlers</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\game\VoiceChatHandler.cpp">
       <Filter>World/Handlers</Filter>
     </ClCompile>
@@ -516,18 +513,13 @@
     <ClCompile Include="..\..\src\game\movement\util.cpp">
       <Filter>Movement</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\game\WardenBase.cpp">
-      <Filter>Warden</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\src\game\WardenDataStorage.cpp">
-      <Filter>Warden</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\src\game\pchdef.cpp" />
+    <ClCompile Include="..\..\src\game\VehicleHandler.cpp" />
+    <ClCompile Include="..\..\src\game\WorldPacket.cpp" />
+    <ClCompile Include="..\..\src\game\WardenBase.cpp" />
+    <ClCompile Include="..\..\src\game\WardenDataStorage.cpp" />
     <ClCompile Include="..\..\src\game\WardenMac.cpp" />
     <ClCompile Include="..\..\src\game\WardenWin.cpp" />
-    <ClCompile Include="..\..\src\game\WorldPacket.cpp">
-      <Filter>World/Handlers</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\game\AccountMgr.h">
@@ -962,9 +954,6 @@
     <ClInclude Include="..\..\src\game\vmap\WorldModel.h">
       <Filter>vmaps</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\game\MovementStructures.h">
-      <Filter>Movement</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\game\Movement\MoveSpline.h">
       <Filter>Movement</Filter>
     </ClInclude>
@@ -989,19 +978,14 @@
     <ClInclude Include="..\..\src\game\Movement\typedefs.h">
       <Filter>Movement</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\game\WardenBase.h">
-      <Filter>Warden</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\game\WardenDataStorage.h">
-      <Filter>Warden</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\src\game\pchdef.h" />
+    <ClInclude Include="..\..\src\game\WorldPacket.h" />
+    <ClInclude Include="..\..\src\game\MovementStructures.h" />
+    <ClInclude Include="..\..\src\game\WardenBase.h" />
+    <ClInclude Include="..\..\src\game\WardenDataStorage.h" />
     <ClInclude Include="..\..\src\game\WardenMac.h" />
     <ClInclude Include="..\..\src\game\WardenModuleMac.h" />
     <ClInclude Include="..\..\src\game\WardenModuleWin.h" />
     <ClInclude Include="..\..\src\game\WardenWin.h" />
-    <ClInclude Include="..\..\src\game\WorldPacket.h">
-      <Filter>World/Handlers</Filter>
-    </ClInclude>
   </ItemGroup>
 </Project>

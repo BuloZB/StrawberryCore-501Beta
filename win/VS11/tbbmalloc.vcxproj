@@ -1,6 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug_NoPCH|Win32">
+      <Configuration>Debug_NoPCH</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug_NoPCH|x64">
+      <Configuration>Debug_NoPCH</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
       <Platform>Win32</Platform>
@@ -25,6 +33,11 @@
     <VCTargetsPath Condition="'$(VCTargetsPath11)' != '' and '$(VSVersion)' == '' and $(VisualStudioVersion) == ''">$(VCTargetsPath11)</VCTargetsPath>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_NoPCH|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>NotSet</CharacterSet>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <CharacterSet>NotSet</CharacterSet>
@@ -32,6 +45,11 @@
     <PlatformToolset>v110</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>NotSet</CharacterSet>
+    <PlatformToolset>v110</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug_NoPCH|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <CharacterSet>NotSet</CharacterSet>
     <PlatformToolset>v110</PlatformToolset>
@@ -51,10 +69,16 @@
   <ImportGroup Label="ExtensionSettings">
     <Import Project="$(VCTargetsPath)\BuildCustomizations\masm.props" />
   </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug_NoPCH|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug_NoPCH|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
@@ -86,6 +110,11 @@
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|X64'">tbbmalloc</TargetName>
     <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|X64'">.dll</TargetExt>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|X64'">false</LinkIncremental>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug_NoPCH|Win32'">..\..\dep\lib\$(Platform)_debug\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug_NoPCH|Win32'">.\tbbmalloc__$(Platform)_$(Configuration)\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug_NoPCH|Win32'">tbbmalloc_debug</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug_NoPCH|Win32'">.dll</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug_NoPCH|Win32'">false</LinkIncremental>
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug_NoPCH|X64'">..\..\dep\lib\$(Platform)_debug\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug_NoPCH|X64'">.\tbbmalloc__$(Platform)_$(Configuration)\</IntDir>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug_NoPCH|X64'">tbbmalloc_debug</TargetName>
@@ -118,6 +147,7 @@
       <DataExecutionPrevention>
       </DataExecutionPrevention>
       <TargetMachine>MachineX86</TargetMachine>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -211,8 +241,73 @@
       <TargetMachine>MachineX64</TargetMachine>
     </Link>
   </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug_NoPCH|Win32'">
+    <ClCompile>
+      <AdditionalOptions> /c /MDd /Od /Ob0 /Zi /EHs- /Zc:forScope /Zc:wchar_t /DTBB_USE_DEBUG /DDO_ITT_NOTIFY /DUSE_WINTHREAD /D_CRT_SECURE_NO_DEPRECATE /D_WIN32_WINNT=0x0400 /D__TBB_BUILD=1 /I../../src /I../../include /I../../src/tbbmalloc /I../../src/tbbmalloc %(AdditionalOptions)</AdditionalOptions>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>..\..\dep\tbb\include;..\..\dep\tbb\src;..\..\dep\tbb\build;..\..\dep\tbb\build\vsproject;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ExceptionHandling>
+      </ExceptionHandling>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>false</SuppressStartupBanner>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4244;4267;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <AdditionalOptions>/DLL /MAP /DEBUG /fixed:no /INCREMENTAL:NO  /DEF:$(IntDir)tbbmalloc.def %(AdditionalOptions)</AdditionalOptions>
+      <OutputFile>..\..\dep\lib\$(Platform)_debug\tbbmalloc_debug.dll</OutputFile>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug_NoPCH|x64'">
+    <Midl>
+      <TargetEnvironment>X64</TargetEnvironment>
+    </Midl>
+    <ClCompile>
+      <AdditionalOptions> /c /MDd /Od /Ob0 /Zi /EHs- /Zc:forScope /Zc:wchar_t /DTBB_USE_DEBUG /GS- /DDO_ITT_NOTIFY /DUSE_WINTHREAD /D_CRT_SECURE_NO_DEPRECATE /D_WIN32_WINNT=0x0400 /D__TBB_BUILD=1 /I../../src /I../../include /I../../src/tbbmalloc /I../../src/tbbmalloc %(AdditionalOptions)</AdditionalOptions>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>..\..\dep\tbb\include;..\..\dep\tbb\src;..\..\dep\tbb\build;..\..\dep\tbb\build\vsproject;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <ExceptionHandling>
+      </ExceptionHandling>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <SuppressStartupBanner>false</SuppressStartupBanner>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4244;4267;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <ShowIncludes>false</ShowIncludes>
+    </ClCompile>
+    <Link>
+      <AdditionalOptions>/nologo /DLL /MAP /DEBUG /fixed:no /INCREMENTAL:NO  /DEF:$(IntDir)tbbmalloc.def %(AdditionalOptions)</AdditionalOptions>
+      <OutputFile>..\..\dep\lib\$(Platform)_debug\tbbmalloc_debug.dll</OutputFile>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Windows</SubSystem>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+      <TargetMachine>MachineX64</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
   <ItemGroup>
     <CustomBuild Include="..\..\dep\tbb\src\tbb\em64t-masm\atomic_support.asm">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug_NoPCH|Win32'">true</ExcludedFromBuild>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug_NoPCH|x64'">building atomic_support.obj</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_NoPCH|x64'">ml64 /Fo"tbbmalloc__$(Platform)_$(Configuration)\atomic_support.obj" /DUSE_FRAME_POINTER /DEM64T=1 /c /Zi ../../dep/tbb/src/tbb/intel64-masm/atomic_support.asm
+</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_NoPCH|x64'">tbbmalloc__$(Platform)_$(Configuration)\atomic_support.obj;%(Outputs)</Outputs>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">building atomic_support.obj</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">ml64 /Fo"tbbmalloc__$(Platform)_$(Configuration)\atomic_support.obj" /DUSE_FRAME_POINTER /DEM64T=1 /c /Zi ../../dep/tbb/src/tbb/intel64-masm/atomic_support.asm
@@ -225,12 +320,18 @@
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">tbbmalloc__$(Platform)_$(Configuration)\atomic_support.obj;%(Outputs)</Outputs>
     </CustomBuild>
     <MASM Include="..\..\dep\tbb\src\tbb\ia32-masm\atomic_support.asm">
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug_NoPCH|Win32'">/coff /Zi</AdditionalOptions>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug_NoPCH|x64'">true</ExcludedFromBuild>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug_NoPCH|x64'">/coff /Zi</AdditionalOptions>
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">/coff /Zi</AdditionalOptions>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">/coff /Zi</AdditionalOptions>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </MASM>
     <MASM Include="..\..\dep\tbb\src\tbb\ia32-masm\lock_byte.asm">
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug_NoPCH|Win32'">/coff /Zi</AdditionalOptions>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug_NoPCH|x64'">true</ExcludedFromBuild>
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug_NoPCH|x64'">/coff /Zi</AdditionalOptions>
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">/coff /Zi</AdditionalOptions>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
       <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">/coff /Zi</AdditionalOptions>
@@ -246,6 +347,15 @@
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="..\..\dep\tbb\src\tbbmalloc\win32-tbbmalloc-export.def">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug_NoPCH|Win32'">generating tbbmalloc.def file</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_NoPCH|Win32'">cl /nologo /TC /EP ../../dep/tbb/src/tbbmalloc/win32-tbbmalloc-export.def /DTBB_USE_DEBUG /DDO_ITT_NOTIFY /DUSE_WINTHREAD /D_CRT_SECURE_NO_DEPRECATE /D_WIN32_WINNT=0x0400 /D__TBB_BUILD=1 &gt;$(IntDir)tbbmalloc.def
+</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_NoPCH|Win32'">.\tbbmalloc__$(Platform)_$(Configuration)\tbbmalloc.def;%(Outputs)</Outputs>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug_NoPCH|x64'">true</ExcludedFromBuild>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug_NoPCH|x64'">generating tbb.def file</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_NoPCH|x64'">cl /nologo /TC /EP ../../src/tbbmalloc/win32-tbbmalloc-export.def /DTBB_USE_DEBUG /DDO_ITT_NOTIFY /DUSE_WINTHREAD /D_CRT_SECURE_NO_DEPRECATE /D_WIN32_WINNT=0x0400 /D__TBB_BUILD=1 &gt;$(IntDir)tbbmalloc.def
+</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_NoPCH|x64'">$(IntDir)tbbmalloc.def;%(Outputs)</Outputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">generating tbbmalloc.def file</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo /TC /EP ../../dep/tbb/src/tbbmalloc/win32-tbbmalloc-export.def /DTBB_USE_DEBUG /DDO_ITT_NOTIFY /DUSE_WINTHREAD /D_CRT_SECURE_NO_DEPRECATE /D_WIN32_WINNT=0x0400 /D__TBB_BUILD=1 &gt;$(IntDir)tbbmalloc.def
 </Command>
@@ -266,6 +376,15 @@
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(IntDir)tbb.def;%(Outputs)</Outputs>
     </CustomBuild>
     <CustomBuild Include="..\..\dep\tbb\src\tbbmalloc\win64-tbbmalloc-export.def">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug_NoPCH|Win32'">true</ExcludedFromBuild>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug_NoPCH|Win32'">generating tbb.def file</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_NoPCH|Win32'">cl /nologo /TC /EP ../../src/tbb/win64-tbb-export.def /DTBB_USE_DEBUG /DDO_ITT_NOTIFY /DUSE_WINTHREAD /D_CRT_SECURE_NO_DEPRECATE /D_WIN32_WINNT=0x0400 /D__TBB_BUILD=1 &gt;$(IntDir)tbb.def
+</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_NoPCH|Win32'">$(IntDir)tbb.def;%(Outputs)</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug_NoPCH|x64'">generating tbbmalloc.def file</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug_NoPCH|x64'">cl /nologo /TC /EP ../../dep/tbb/src/tbbmalloc/win64-tbbmalloc-export.def /DTBB_USE_DEBUG /DDO_ITT_NOTIFY /DUSE_WINTHREAD /D_CRT_SECURE_NO_DEPRECATE /D_WIN32_WINNT=0x0400 /D__TBB_BUILD=1 &gt;$(IntDir)tbbmalloc.def
+</Command>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug_NoPCH|x64'">..\..\bin\$(Platform)_$(Configuration)\tbbmalloc.def;%(Outputs)</Outputs>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">generating tbb.def file</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cl /nologo /TC /EP ../../src/tbb/win64-tbb-export.def /DTBB_USE_DEBUG /DDO_ITT_NOTIFY /DUSE_WINTHREAD /D_CRT_SECURE_NO_DEPRECATE /D_WIN32_WINNT=0x0400 /D__TBB_BUILD=1 &gt;$(IntDir)tbb.def
@@ -337,6 +456,8 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="..\..\dep\tbb\src\tbbmalloc\tbbmalloc.rc">
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug_NoPCH|Win32'">..\..\dep\tbb\include;..\..\dep\tbb\src;..\..\dep\tbb\build\vsproject;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug_NoPCH|x64'">..\..\dep\tbb\include;..\..\dep\tbb\src;..\..\dep\tbb\build\vsproject;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\..\dep\tbb\include;..\..\dep\tbb\src;..\..\dep\tbb\build\vsproject;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\..\dep\tbb\include;..\..\dep\tbb\src;..\..\dep\tbb\build\vsproject;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\..\dep\tbb\include;..\..\dep\tbb\src;..\..\dep\tbb\build\vsproject;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
