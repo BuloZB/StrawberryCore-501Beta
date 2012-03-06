@@ -174,29 +174,27 @@ namespace Movement
         uint32 nodes = move_spline.getPath().size();
 
         data.append<Vector3>(&move_spline.getPath()[0], nodes);
-        data << float(1.f);                             // splineInfo.duration_mod; added in 3.1
 
         if (splineFlags.walkmode)
         {
-            uint8 guidBytes[] = { 3, 4, 5, 7, 2, 0, 6, 1 };
+            uint8 guidBytes[] = { 0, 6, 5, 4, 1, 3, 7, 2 };
             data.WriteGuidBytes(move_spline.facing.target, guidBytes, 8, 0);
         }
 
         if(splineFlags.flying)
-            data << move_spline.facing.f.x << move_spline.facing.f.y << move_spline.facing.f.z;
+            data << move_spline.facing.f.z << move_spline.facing.f.y << move_spline.facing.f.z;
 
+        data << move_spline.timePassed();
+        data << float(1.f);                             // splineInfo.duration_mod; added in 3.1
+        data << float(1.f);
+        
         data << splineFlags.raw();
-
         if (splineFlags.orientationFixed)
             data << move_spline.facing.angle;
 
-        data << move_spline.timePassed();
-        data << move_spline.Duration();
-        data << move_spline.GetId();
-
-        data << move_spline.FinalDestination().z;
         data << move_spline.FinalDestination().y;
-        data << uint32(0);
         data << move_spline.FinalDestination().x;
+        data << uint32(0);
+        data << move_spline.FinalDestination().z;
     }
 }
