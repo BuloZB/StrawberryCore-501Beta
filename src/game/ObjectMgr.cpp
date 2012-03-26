@@ -3251,11 +3251,13 @@ void ObjectMgr::LoadPlayerInfo()
                 continue;
 
             // skip expansion races if not playing with expansion
-            if (sWorld.getConfig(CONFIG_UINT32_EXPANSION) < 1 && (race == RACE_BLOODELF || race == RACE_DRAENEI))
+            if (sWorld.getConfig(CONFIG_UINT32_EXPANSION) < 1 && (race == RACE_BLOODELF || race == RACE_DRAENEI) ||
+                sWorld.getConfig(CONFIG_UINT32_EXPANSION) < 4 && (race == RACE_PANDAREN_BOTH || race == RACE_PANDAREN_ALLI || race == RACE_PANDAREN_HORDE))
                 continue;
 
             // skip expansion classes if not playing with expansion
-            if (sWorld.getConfig(CONFIG_UINT32_EXPANSION) < 2 && class_ == CLASS_DEATH_KNIGHT)
+            if (sWorld.getConfig(CONFIG_UINT32_EXPANSION) < 2 && class_ == CLASS_DEATH_KNIGHT ||
+                sWorld.getConfig(CONFIG_UINT32_EXPANSION) < 4 && class_ == CLASS_MONK)
                 continue;
 
             // fatal error if no level 1 data

@@ -48,8 +48,8 @@ CanCastResult CreatureAI::CanCastSpell(Unit* pTarget, const SpellEntry *pSpell, 
             return CAST_FAIL_STATE;
 
         // Check for power (also done by Spell::CheckCast())
-        if (m_creature->GetPower((Powers)pSpell->powerType) < Spell::CalculatePowerCost(pSpell, m_creature))
-            return CAST_FAIL_POWER;
+       // if (m_creature->GetPower((Powers)pSpell->powerType) < Spell::CalculatePowerCost(pSpell, m_creature))
+       //     return CAST_FAIL_POWER;
     }
 
     if (const SpellRangeEntry *pSpellRange = sSpellRangeStore.LookupEntry(pSpell->rangeIndex))

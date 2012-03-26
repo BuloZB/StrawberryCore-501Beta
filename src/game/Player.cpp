@@ -1537,6 +1537,9 @@ bool Player::BuildEnumData( QueryResult * result, ByteBuffer * p_data )
         return false;
     }
 
+    *p_data << uint8(gender);                               // Gender
+    *p_data << uint8(level);                                // Level
+
     Tokens data = StrSplit(fields[19].GetCppString(), " ");
     for (uint8 slot = 0; slot < EQUIPMENT_SLOT_END; slot++)
     {
@@ -1577,55 +1580,43 @@ bool Player::BuildEnumData( QueryResult * result, ByteBuffer * p_data )
         *p_data << uint8(0);
     }
 
-    *p_data << uint32(zone);                                // Zone id
-    *p_data << uint32(petLevel);                            // pet level
-    *p_data << uint32(char_flags);                          // character flags
-
     uint32 playerBytes2 = fields[6].GetUInt32();
-    *p_data << uint8(playerBytes2 & 0xFF);                  // facial hair
 
     if (Guid0)
         *p_data << uint8(Guid0 ^ 1);
 
-    if (Guid2)
-        *p_data << uint8(Guid2 ^ 1);
-
-    *p_data << uint8(0);                                    // char order id
-
-    *p_data << uint32(petFamily);                           // Pet Family
+    *p_data << fields[12].GetFloat();                       // z
+    *p_data << uint8(playerBytes >> 24);                    // Hair color
+    *p_data << uint32(zone);                                // Zone id
 
     if (Guid3)
         *p_data << uint8(Guid3 ^ 1);
 
-    *p_data << uint8(pClass);                               // class
-
-    *p_data << fields[10].GetFloat();                       // x
-
     if (Guid1)
         *p_data << uint8(Guid1 ^ 1);
 
-    *p_data << uint8(pRace);                                // Race
-    *p_data << uint32(petDisplayId);                        // Pet DisplayID
-
-    *p_data << fields[11].GetFloat();                       // y
-
-    *p_data << uint8(gender);                               // Gender
-
+    *p_data << uint32(petLevel);                            // pet level
+    *p_data << fields[10].GetFloat();                       // x
+    *p_data << uint8(0);                                    // char order id
     *p_data << uint8(playerBytes >> 16);                    // Hair style
-    *p_data << uint8(level);                                // Level
-
-    *p_data << fields[12].GetFloat();                       // z
+    *p_data << uint32(fields[9].GetUInt32());               // map
+    *p_data << uint8(playerBytes >> 8);                     // face
+    *p_data << uint8(playerBytes);                          // skin
+    p_data->append(fields[1].GetCppString().c_str(), fields[1].GetCppString().size());
+    *p_data << uint8(playerBytes2 & 0xFF);                  // facial hair
+    *p_data << uint8(pClass);                               // class
+    *p_data << uint32(petDisplayId);                        // Pet DisplayID
+    *p_data << uint8(pRace);                                // Race
+    *p_data << fields[11].GetFloat();                       // y
 
     // character customize flags
     *p_data << uint32(atLoginFlags & AT_LOGIN_CUSTOMIZE ? CHAR_CUSTOMIZE_FLAG_CUSTOMIZE : CHAR_CUSTOMIZE_FLAG_NONE);
-    
-    *p_data << uint8(playerBytes);                          // skin
+   
+    if (Guid2)
+        *p_data << uint8(Guid2 ^ 1);
 
-    *p_data << uint8(playerBytes >> 24);                    // Hair color
-    *p_data << uint8(playerBytes >> 8);                     // face
-    *p_data << uint32(fields[9].GetUInt32());               // map
-
-    p_data->append(fields[1].GetCppString().c_str(), fields[1].GetCppString().size());
+    *p_data << uint32(char_flags);                          // character flags
+    *p_data << uint32(petFamily);                           // Pet Family
 
     return true;
 }
@@ -2045,7 +2036,7 @@ void Player::RegenerateAll(uint32 diff)
     Regenerate(POWER_MANA, diff);
 
     if (getClass() == CLASS_DEATH_KNIGHT)
-        Regenerate(POWER_RUNE, diff);
+        Regenerate(POWER_RUNES, diff);
 
     if (getClass() == CLASS_HUNTER)
         Regenerate(POWER_FOCUS, diff);
@@ -2098,7 +2089,7 @@ void Player::Regenerate(Powers power, uint32 diff)
             float RunicPowerDecreaseRate = sWorld.getConfig(CONFIG_FLOAT_RATE_POWER_RUNICPOWER_LOSS);
             addvalue = 30 * RunicPowerDecreaseRate;         // 3 RunicPower by tick
         }   break;
-        case POWER_RUNE:
+        case POWER_RUNES:
         {
             if (getClass() != CLASS_DEATH_KNIGHT)
                 break;
@@ -2117,7 +2108,6 @@ void Player::Regenerate(Powers power, uint32 diff)
                 }
             }
         }   break;
-        case POWER_HAPPINESS:
         case POWER_HEALTH:
             break;
     }
@@ -2589,7 +2579,6 @@ void Player::GiveLevel(uint32 level)
     if(GetPower(POWER_RAGE) > GetMaxPower(POWER_RAGE))
         SetPower(POWER_RAGE, GetMaxPower(POWER_RAGE));
     SetPower(POWER_FOCUS, 0);
-    SetPower(POWER_HAPPINESS, 0);
 
     _ApplyAllLevelScaleItemMods(true);
 
@@ -2808,7 +2797,6 @@ void Player::InitStatsForLevel(bool reapplyMods)
     if(GetPower(POWER_RAGE) > GetMaxPower(POWER_RAGE))
         SetPower(POWER_RAGE, GetMaxPower(POWER_RAGE));
     SetPower(POWER_FOCUS, 0);
-    SetPower(POWER_HAPPINESS, 0);
     SetPower(POWER_RUNIC_POWER, 0);
 
     // update level to hunter/summon pet

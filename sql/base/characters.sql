@@ -490,7 +490,6 @@ CREATE TABLE `character_pet` (
   `slot` int(11) unsigned NOT NULL DEFAULT '0',
   `curhealth` int(11) unsigned NOT NULL DEFAULT '1',
   `curmana` int(11) unsigned NOT NULL DEFAULT '0',
-  `curhappiness` int(11) unsigned NOT NULL DEFAULT '0',
   `savetime` bigint(20) unsigned NOT NULL DEFAULT '0',
   `resettalents_cost` int(11) unsigned NOT NULL DEFAULT '0',
   `resettalents_time` bigint(20) unsigned NOT NULL DEFAULT '0',

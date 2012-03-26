@@ -244,8 +244,8 @@ int WorldSocket::open(void *a)
 
     m_Address = remote_addr.get_host_addr();
 
-    std::string ServerToClient = "RLD OF WARCRAFT CONNECTION - SERVER TO CLIENT";
-    WorldPacket data(MSG_WOW_CONNECTION, 46);
+    std::string ServerToClient = "D OF WARCRAFT CONNECTION - SERVER TO CLIENT";
+    WorldPacket data(0x4C524F57, 46);
 
     data << ServerToClient;
 
@@ -255,11 +255,11 @@ int WorldSocket::open(void *a)
     // Send startup packet.
     WorldPacket packet(SMSG_AUTH_CHALLENGE, 37);
 
-    packet << uint8(1);
-    packet << m_Seed;
-    
     for (uint32 i = 0; i < 8; i++)
         packet << uint32(0);
+
+    packet << uint8(1);
+    packet << m_Seed;
 
     if (SendPacket (packet) == -1)
         return -1;
@@ -755,22 +755,19 @@ int WorldSocket::HandleAuthSession(WorldPacket& recvPacket)
     WorldPacket packet;
 
     recvPacket.read_skip<uint32>();
+    recvPacket.read(digest, 10);
+    recvPacket.read_skip<uint32>();
     recvPacket.read(digest, 4);
-    recvPacket.read_skip<uint8>();
+    recvPacket.read_skip<uint32>();
     recvPacket.read(digest, 1);
     recvPacket.read_skip<uint32>();
-    recvPacket.read_skip<uint32>();
-    recvPacket.read(digest, 2);
     recvPacket.read_skip<uint8>();
-    recvPacket.read(digest, 3);
+    recvPacket.read_skip<uint8>();
+    recvPacket.read(digest, 4);
+    recvPacket >> clientSeed;
+    recvPacket.read_skip<uint64>();
     recvPacket >> clientBuild;
     recvPacket.read(digest, 1);
-    recvPacket.read_skip<uint32>();
-    recvPacket.read(digest, 6);
-    recvPacket >> clientSeed;
-    recvPacket.read(digest, 1);
-    recvPacket.read_skip<uint64>();
-    recvPacket.read(digest, 2);
 
     recvPacket >> m_addonSize;                            // addon data size
 

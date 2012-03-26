@@ -152,79 +152,79 @@ ConfVersion=2010102201
 #
 ###################################################################################################################
 
-AuctionHouseBot.Seller.Enabled = 0
-AuctionHouseBot.DEBUG.Seller = 0
+AuctionHouseBot.Seller.Enabled                = 0
+AuctionHouseBot.DEBUG.Seller                  = 0
 
-AuctionHouseBot.Alliance.Items.Amount.Ratio = 100
-AuctionHouseBot.Horde.Items.Amount.Ratio = 100
-AuctionHouseBot.Neutral.Items.Amount.Ratio = 100
+AuctionHouseBot.Alliance.Items.Amount.Ratio   = 100
+AuctionHouseBot.Horde.Items.Amount.Ratio      = 100
+AuctionHouseBot.Neutral.Items.Amount.Ratio    = 100
 
-AuctionHouseBot.MinTime = 1
-AuctionHouseBot.MaxTime = 72
+AuctionHouseBot.MinTime                       = 1
+AuctionHouseBot.MaxTime                       = 72
 
-AuctionHouseBot.Items.Vendor = 0
-AuctionHouseBot.Items.Loot = 1
-AuctionHouseBot.Items.Misc = 0
-AuctionHouseBot.Bind.No = 1
-AuctionHouseBot.Bind.Pickup = 0
-AuctionHouseBot.Bind.Equip = 1
-AuctionHouseBot.Bind.Use = 1
-AuctionHouseBot.Bind.Quest = 0
-AuctionHouseBot.LockBox.Enabled = 0
+AuctionHouseBot.Items.Vendor                  = 0
+AuctionHouseBot.Items.Loot                    = 1
+AuctionHouseBot.Items.Misc                    = 0
+AuctionHouseBot.Bind.No                       = 1
+AuctionHouseBot.Bind.Pickup                   = 0
+AuctionHouseBot.Bind.Equip                    = 1
+AuctionHouseBot.Bind.Use                      = 1
+AuctionHouseBot.Bind.Quest                    = 0
+AuctionHouseBot.LockBox.Enabled               = 0
 
-AuctionHouseBot.ItemsPerCycle.Boost = 75
-AuctionHouseBot.ItemsPerCycle.Normal = 20
-AuctionHouseBot.BuyPrice.Seller = 1
-AuctionHouseBot.Alliance.Price.Ratio = 200
-AuctionHouseBot.Horde.Price.Ratio = 200
-AuctionHouseBot.Neutral.Price.Ratio = 200
+AuctionHouseBot.ItemsPerCycle.Boost           = 75
+AuctionHouseBot.ItemsPerCycle.Normal          = 20
+AuctionHouseBot.BuyPrice.Seller               = 1
+AuctionHouseBot.Alliance.Price.Ratio          = 200
+AuctionHouseBot.Horde.Price.Ratio             = 200
+AuctionHouseBot.Neutral.Price.Ratio           = 200
 
-AuctionHouseBot.Items.ItemLevel.Min = 0
-AuctionHouseBot.Items.ItemLevel.Max = 0
-AuctionHouseBot.Items.ReqLevel.Min = 0
-AuctionHouseBot.Items.ReqLevel.Max = 0
-AuctionHouseBot.Items.ReqSkill.Min = 0
-AuctionHouseBot.Items.ReqSkill.Max = 0
+AuctionHouseBot.Items.ItemLevel.Min           = 0
+AuctionHouseBot.Items.ItemLevel.Max           = 0
+AuctionHouseBot.Items.ReqLevel.Min            = 0
+AuctionHouseBot.Items.ReqLevel.Max            = 0
+AuctionHouseBot.Items.ReqSkill.Min            = 0
+AuctionHouseBot.Items.ReqSkill.Max            = 0
 
-AuctionHouseBot.Items.Amount.Grey = 0
-AuctionHouseBot.Items.Amount.White = 2000
-AuctionHouseBot.Items.Amount.Green = 2500
-AuctionHouseBot.Items.Amount.Blue = 1500
-AuctionHouseBot.Items.Amount.Purple = 1000
-AuctionHouseBot.Items.Amount.Orange = 0
-AuctionHouseBot.Items.Amount.Yellow = 0
+AuctionHouseBot.Items.Amount.Grey             = 0
+AuctionHouseBot.Items.Amount.White            = 2000
+AuctionHouseBot.Items.Amount.Green            = 2500
+AuctionHouseBot.Items.Amount.Blue             = 1500
+AuctionHouseBot.Items.Amount.Purple           = 1000
+AuctionHouseBot.Items.Amount.Orange           = 0
+AuctionHouseBot.Items.Amount.Yellow           = 0
 
-AuctionHouseBot.Class.Consumable = 6
-AuctionHouseBot.Class.Container = 4
-AuctionHouseBot.Class.Weapon = 8
-AuctionHouseBot.Class.Gem = 3
-AuctionHouseBot.Class.Armor = 8
-AuctionHouseBot.Class.Reagent = 1
-AuctionHouseBot.Class.Projectile = 2
-AuctionHouseBot.Class.TradeGood = 10
-AuctionHouseBot.Class.Generic = 1
-AuctionHouseBot.Class.Recipe = 6
-AuctionHouseBot.Class.Quiver = 1
-AuctionHouseBot.Class.Quest = 1
-AuctionHouseBot.Class.Key = 1
-AuctionHouseBot.Class.Misc = 5
-AuctionHouseBot.Class.Glyph = 3
+AuctionHouseBot.Class.Consumable              = 6
+AuctionHouseBot.Class.Container               = 4
+AuctionHouseBot.Class.Weapon                  = 8
+AuctionHouseBot.Class.Gem                     = 3
+AuctionHouseBot.Class.Armor                   = 8
+AuctionHouseBot.Class.Reagent                 = 1
+AuctionHouseBot.Class.Projectile              = 2
+AuctionHouseBot.Class.TradeGood               = 10
+AuctionHouseBot.Class.Generic                 = 1
+AuctionHouseBot.Class.Recipe                  = 6
+AuctionHouseBot.Class.Quiver                  = 1
+AuctionHouseBot.Class.Quest                   = 1
+AuctionHouseBot.Class.Key                     = 1
+AuctionHouseBot.Class.Misc                    = 5
+AuctionHouseBot.Class.Glyph                   = 3
 
 AuctionHouseBot.Class.Misc.Mount.ReqLevel.Min = 0
 AuctionHouseBot.Class.Misc.Mount.ReqLevel.Max = 0
 AuctionHouseBot.Class.Misc.Mount.ReqSkill.Min = 0
 AuctionHouseBot.Class.Misc.Mount.ReqSkill.Max = 0
-AuctionHouseBot.Class.Glyph.ReqLevel.Min = 0
-AuctionHouseBot.Class.Glyph.ReqLevel.Max = 0
-AuctionHouseBot.Class.Glyph.ItemLevel.Min = 0
-AuctionHouseBot.Class.Glyph.ItemLevel.Max = 0
+AuctionHouseBot.Class.Glyph.ReqLevel.Min      = 0
+AuctionHouseBot.Class.Glyph.ReqLevel.Max      = 0
+AuctionHouseBot.Class.Glyph.ItemLevel.Min     = 0
+AuctionHouseBot.Class.Glyph.ItemLevel.Max     = 0
 AuctionHouseBot.Class.TradeGood.ItemLevel.Min = 0
 AuctionHouseBot.Class.TradeGood.ItemLevel.Max = 0
 AuctionHouseBot.Class.Container.ItemLevel.Min = 0
 AuctionHouseBot.Class.Container.ItemLevel.Max = 0
 
-AuctionHouseBot.forceIncludeItems = ""
-AuctionHouseBot.forceExcludeItems = ""
+AuctionHouseBot.forceIncludeItems             = ""
+AuctionHouseBot.forceExcludeItems             = ""
 
 ###################################################################################################################
 # Buyer config
@@ -259,17 +259,17 @@ AuctionHouseBot.forceExcludeItems = ""
 #
 ###################################################################################################################
 
-AuctionHouseBot.Buyer.Enabled = 0
-AuctionHouseBot.DEBUG.Buyer = 0
+AuctionHouseBot.Buyer.Enabled               = 0
+AuctionHouseBot.DEBUG.Buyer                 = 0
 
-AuctionHouseBot.Buyer.Alliance.Enabled = 1
-AuctionHouseBot.Buyer.Horde.Enabled = 1
-AuctionHouseBot.Buyer.Neutral.Enabled = 1
+AuctionHouseBot.Buyer.Alliance.Enabled      = 1
+AuctionHouseBot.Buyer.Horde.Enabled         = 1
+AuctionHouseBot.Buyer.Neutral.Enabled       = 1
 
-AuctionHouseBot.Buyer.BuyPrice = 0
+AuctionHouseBot.Buyer.BuyPrice              = 0
 
-AuctionHouseBot.Buyer.Recheck.Interval = 20
+AuctionHouseBot.Buyer.Recheck.Interval      = 20
 
 AuctionHouseBot.Buyer.Alliance.Chance.Ratio = 3
-AuctionHouseBot.Buyer.Horde.Chance.Ratio = 3
-AuctionHouseBot.Buyer.Neutral.Chance.Ratio = 3
+AuctionHouseBot.Buyer.Horde.Chance.Ratio    = 3
+AuctionHouseBot.Buyer.Neutral.Chance.Ratio  = 3

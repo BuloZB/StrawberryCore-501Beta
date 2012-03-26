@@ -150,6 +150,7 @@ void WorldSession::HandleResponseCharacterEnum(QueryResult * result)
     uint8 charCount = 0;
     ByteBuffer buffer;
 
+    data.WriteBit(1);
     data.WriteBits(0, 23);
     data.WriteBits(result ? (*result).GetRowCount() : 0 , 17);
 
@@ -204,22 +205,22 @@ void WorldSession::HandleResponseCharacterEnum(QueryResult * result)
             {
                 switch (i)
                 {
-                    case 0:
+                    case 3:
                         data.WriteBit(Guid0 ? 1 : 0);
                         break;
-                    case 15:
+                    case 4:
                         data.WriteBit(Guid1 ? 1 : 0);
                         break;
-                    case 5:
+                    case 11:
                         data.WriteBit(Guid2 ? 1 : 0);
                         break;
-                    case 2:
+                    case 12:
                         data.WriteBit(Guid3 ? 1 : 0);
                         break;
-                    case 7:
+                    case 6:
                         data.WriteBits(charInfoList[counter].nameLenghts, 7);
                         break;
-                    case 4:
+                    case 14:
                         data.WriteBit(charInfoList[counter].firstLogin ? 1 : 0);
                         break;
                     default:
@@ -231,13 +232,11 @@ void WorldSession::HandleResponseCharacterEnum(QueryResult * result)
             counter++;
         }
 
-        data.WriteBit(1);
         data.FlushBits();
         data.append(buffer);
     }
     else
     {
-        data.WriteBit(1);
         data.FlushBits();
     }
 

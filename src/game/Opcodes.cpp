@@ -32,7 +32,7 @@ uint16 opcodesEnumToNumber[MAX_OPCODE_VALUE];
 
 void OpcodeTableHandler::LoadOpcodesFromDB()
 {
-    QueryResult* result = WorldDatabase.Query("SELECT OpcodeName, OpcodeValue FROM Opcodes WHERE ClientBuild = 15354");
+    QueryResult* result = WorldDatabase.Query("SELECT OpcodeName, OpcodeValue FROM Opcodes WHERE ClientBuild = 15464");
     if (!result)
         return;
 

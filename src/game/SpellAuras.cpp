@@ -9734,7 +9734,7 @@ void SpellAuraHolder::Update(uint32 diff)
         {
             if (Unit* caster = GetCaster())
             {
-                Powers powertype = Powers(GetSpellProto()->powerType);
+                /*Powers powertype = Powers(GetSpellProto()->powerType);
                 m_timeCla = 1*IN_MILLISECONDS;
 
                 if (SpellPowerEntry const* spellPower = GetSpellProto()->GetSpellPower())
@@ -9746,7 +9746,7 @@ void SpellAuraHolder::Update(uint32 diff)
                         else
                             caster->ModifyPower(powertype, -manaPerSecond);
                     }
-                }
+                }*/
             }
         }
     }

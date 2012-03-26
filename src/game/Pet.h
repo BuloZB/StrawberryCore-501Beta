@@ -59,13 +59,6 @@ enum PetModeFlags
     PET_MODE_DEFAULT           = PET_MODE_UNKNOWN_0 | PET_MODE_UNKNOWN_2,
 };
 
-enum HappinessState
-{
-    UNHAPPY = 1,
-    CONTENT = 2,
-    HAPPY   = 3
-};
-
 enum PetSpellState
 {
     PETSPELL_UNCHANGED = 0,
@@ -125,8 +118,6 @@ enum PetNameInvalidReason
 typedef UNORDERED_MAP<uint32, PetSpell> PetSpellMap;
 typedef std::vector<uint32> AutoSpellList;
 
-#define HAPPINESS_LEVEL_SIZE        333000
-
 #define ACTIVE_SPELLS_MAX           4
 
 #define PET_FOLLOW_DIST  1.0f
@@ -170,8 +161,6 @@ class STRAWBERRY_DLL_SPEC Pet : public Creature
         }
 
         void RegenerateAll(uint32 update_diff);             // overwrite Creature::RegenerateAll
-        void LooseHappiness();
-        HappinessState GetHappinessState();
         void GivePetXP(uint32 xp);
         void GivePetLevel(uint32 level);
         void SynchronizeLevelWithOwner();
@@ -249,7 +238,6 @@ class STRAWBERRY_DLL_SPEC Pet : public Creature
 
         bool    m_removed;                                  // prevent overwrite pet state in DB at next Pet::Update if pet already removed(saved)
     protected:
-        uint32  m_happinessTimer;
         PetType m_petType;
         int32   m_duration;                                 // time until unsummon (used mostly for summoned guardians and not used for controlled pets)
         int32   m_bonusdamage;

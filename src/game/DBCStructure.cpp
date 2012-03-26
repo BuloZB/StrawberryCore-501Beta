@@ -91,7 +91,7 @@ SpellLevelsEntry const* SpellEntry::GetSpellLevels() const
 
 SpellPowerEntry const* SpellEntry::GetSpellPower() const
 {
-    return SpellPowerId ? sSpellPowerStore.LookupEntry(SpellPowerId) : NULL;
+    return NULL;//SpellPowerId ? sSpellPowerStore.LookupEntry(SpellPowerId) : NULL;
 }
 
 SpellReagentsEntry const* SpellEntry::GetSpellReagents() const

@@ -21,14 +21,14 @@
 #define STRAWBERRY_SYSTEMCONFIG_H
 
 #ifndef _PACKAGENAME
-#define _PACKAGENAME "Strawberry"
+#define _PACKAGENAME "Strawberry MoP Beta"
 #endif
 
 #include "Platform/Define.h"
 
 #ifndef _VERSION
 #if PLATFORM == PLATFORM_WINDOWS
-# define _VERSION(REVD,REVT,REVN,REVH) "Strawberry 4.3.3 - DEV" " (" REVD " " REVT " Revision " REVN " - " REVH ")"
+# define _VERSION(REVD,REVT,REVN,REVH) "Strawberry 5.0.1 Beta - DEV" " (" REVD " " REVT " Revision " REVN " - " REVH ")"
 #else
 # define _VERSION(REVD,REVT,REVN,REVH) "@VERSION@" " (" REVD " " REVT " Revision " REVN " - " REVH ")"
 #endif
