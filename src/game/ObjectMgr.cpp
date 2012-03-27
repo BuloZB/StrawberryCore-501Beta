@@ -3252,7 +3252,7 @@ void ObjectMgr::LoadPlayerInfo()
 
             // skip expansion races if not playing with expansion
             if (sWorld.getConfig(CONFIG_UINT32_EXPANSION) < 1 && (race == RACE_BLOODELF || race == RACE_DRAENEI) ||
-                sWorld.getConfig(CONFIG_UINT32_EXPANSION) < 4 && (race == RACE_PANDAREN_BOTH || race == RACE_PANDAREN_ALLI || race == RACE_PANDAREN_HORDE))
+                sWorld.getConfig(CONFIG_UINT32_EXPANSION) < 4 && (race == RACE_PANDAREN_NEUTRAL || race == RACE_PANDAREN_ALLI || race == RACE_PANDAREN_HORDE))
                 continue;
 
             // skip expansion classes if not playing with expansion

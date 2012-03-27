@@ -58,7 +58,7 @@ enum Races
     RACE_ICE_TROLL          = 21,
     RACE_WORGEN             = 22,
     RACE_HUMAN_GILNEAN      = 23,
-    RACE_PANDAREN_BOTH      = 24,
+    RACE_PANDAREN_NEUTRAL   = 24,
     RACE_PANDAREN_ALLI      = 25,
     RACE_PANDAREN_HORDE     = 26
 };
@@ -71,18 +71,18 @@ enum Races
     (1<<(RACE_NIGHTELF-1))  |(1<<(RACE_UNDEAD-1))   |(1<<(RACE_TAUREN-1))  | \
     (1<<(RACE_GNOME-1))     |(1<<(RACE_TROLL-1))    |(1<<(RACE_BLOODELF-1))| \
     (1<<(RACE_DRAENEI-1))   |(1<<(RACE_GOBLIN-1))   |(1<<(RACE_WORGEN-1))  | \
-    (1<<(RACE_PANDAREN_BOTH-1))|(1<<(RACE_PANDAREN_ALLI-1))|(1<<(RACE_PANDAREN_HORDE-1)))
+    (1<<(RACE_PANDAREN_NEUTRAL-1))|(1<<(RACE_PANDAREN_ALLI-1))|(1<<(RACE_PANDAREN_HORDE-1)))
 
 // for most cases batter use ChrRace data for team check as more safe, but when need full mask of team can be use this defines.
 #define RACEMASK_ALLIANCE \
     ((1<<(RACE_HUMAN-1))    |(1<<(RACE_DWARF-1))    |(1<<(RACE_NIGHTELF-1))| \
     (1<<(RACE_GNOME-1))     |(1<<(RACE_DRAENEI-1))  |(1<<(RACE_WORGEN-1))  | \
-    (1<<(RACE_PANDAREN_BOTH-1)) | (1<<(RACE_PANDAREN_ALLI-1)))
+    (1<<(RACE_PANDAREN_NEUTRAL-1)) | (1<<(RACE_PANDAREN_ALLI-1)))
 
 #define RACEMASK_HORDE \
     ((1<<(RACE_ORC-1))      |(1<<(RACE_UNDEAD-1))   |(1<<(RACE_TAUREN-1)) | \
     (1<<(RACE_TROLL-1))     |(1<<(RACE_BLOODELF-1)) |(1<<(RACE_GOBLIN-1)) | \
-    (1<<(RACE_PANDAREN_BOTH-1)) | (1<<(RACE_PANDAREN_HORDE-1)))
+    (1<<(RACE_PANDAREN_NEUTRAL-1)) | (1<<(RACE_PANDAREN_HORDE-1)))
 
 // Class value is index in ChrClasses.dbc
 enum Classes
@@ -3343,7 +3343,9 @@ enum ChatMsg
     CHAT_MSG_BN_INLINE_TOAST_BROADCAST        = 0x3B,
     CHAT_MSG_BN_INLINE_TOAST_BROADCAST_INFORM = 0x3C,
     CHAT_MSG_BN_INLINE_TOAST_CONVERSATION     = 0x3D,
-    CHAT_MSG_BN_WHISPER_PLAYER_OFFLINE        = 0x3E
+    CHAT_MSG_BN_WHISPER_PLAYER_OFFLINE        = 0x3E,
+    CHAT_MSG_COMBAT_GUILD_XP_GAIN             = 0x3F,
+
 };
 
 #define MAX_CHAT_MSG_TYPE 0x3E

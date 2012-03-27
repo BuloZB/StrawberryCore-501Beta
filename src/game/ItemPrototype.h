@@ -157,22 +157,23 @@ enum ItemPrototypeFlags2
 
 enum BagFamilyMask
 {
-    BAG_FAMILY_MASK_NONE                      = 0x00000000,
-    BAG_FAMILY_MASK_ARROWS                    = 0x00000001,
-    BAG_FAMILY_MASK_BULLETS                   = 0x00000002,
-    BAG_FAMILY_MASK_SOUL_SHARDS               = 0x00000004,
-    BAG_FAMILY_MASK_LEATHERWORKING_SUPP       = 0x00000008,
-    BAG_FAMILY_MASK_INSCRIPTION_SUPP          = 0x00000010,
-    BAG_FAMILY_MASK_HERBS                     = 0x00000020,
-    BAG_FAMILY_MASK_ENCHANTING_SUPP           = 0x00000040,
-    BAG_FAMILY_MASK_ENGINEERING_SUPP          = 0x00000080,
-    BAG_FAMILY_MASK_KEYS                      = 0x00000100,
-    BAG_FAMILY_MASK_GEMS                      = 0x00000200,
-    BAG_FAMILY_MASK_MINING_SUPP               = 0x00000400,
-    BAG_FAMILY_MASK_SOULBOUND_EQUIPMENT       = 0x00000800,
-    BAG_FAMILY_MASK_VANITY_PETS               = 0x00001000,
-    BAG_FAMILY_MASK_CURRENCY_TOKENS           = 0x00002000,
-    BAG_FAMILY_MASK_QUEST_ITEMS               = 0x00004000
+    BAG_FAMILY_MASK_NONE                      = 0x0000,
+    BAG_FAMILY_MASK_ARROWS                    = 0x0001,
+    BAG_FAMILY_MASK_BULLETS                   = 0x0002,
+    BAG_FAMILY_MASK_SOUL_SHARDS               = 0x0004,
+    BAG_FAMILY_MASK_LEATHERWORKING_SUPP       = 0x0008,
+    BAG_FAMILY_MASK_INSCRIPTION_SUPP          = 0x0010,
+    BAG_FAMILY_MASK_HERBS                     = 0x0020,
+    BAG_FAMILY_MASK_ENCHANTING_SUPP           = 0x0040,
+    BAG_FAMILY_MASK_ENGINEERING_SUPP          = 0x0080,
+    BAG_FAMILY_MASK_KEYS                      = 0x0100,
+    BAG_FAMILY_MASK_GEMS                      = 0x0200,
+    BAG_FAMILY_MASK_MINING_SUPP               = 0x0400,
+    BAG_FAMILY_MASK_SOULBOUND_EQUIPMENT       = 0x0800,
+    BAG_FAMILY_MASK_VANITY_PETS               = 0x1000,
+    BAG_FAMILY_MASK_CURRENCY_TOKENS           = 0x2000,
+    BAG_FAMILY_MASK_QUEST_ITEMS               = 0x4000,
+    BAG_FAMILY_MASK_FISHING_SUPPLIES          = 0x8000
 };
 
 enum SocketColor
@@ -268,10 +269,11 @@ enum ItemSubclassContainer
     ITEM_SUBCLASS_GEM_CONTAINER                 = 5,
     ITEM_SUBCLASS_MINING_CONTAINER              = 6,
     ITEM_SUBCLASS_LEATHERWORKING_CONTAINER      = 7,
-    ITEM_SUBCLASS_INSCRIPTION_CONTAINER         = 8
+    ITEM_SUBCLASS_INSCRIPTION_CONTAINER         = 8,
+    ITEM_SUBCLASS_TACKLE_BOX                    = 9
 };
 
-#define MAX_ITEM_SUBCLASS_CONTAINER               9
+#define MAX_ITEM_SUBCLASS_CONTAINER               10
 
 enum ItemSubclassWeapon
 {
@@ -310,10 +312,12 @@ enum ItemSubclassGem
     ITEM_SUBCLASS_GEM_ORANGE                    = 5,
     ITEM_SUBCLASS_GEM_META                      = 6,
     ITEM_SUBCLASS_GEM_SIMPLE                    = 7,
-    ITEM_SUBCLASS_GEM_PRISMATIC                 = 8
+    ITEM_SUBCLASS_GEM_PRISMATIC                 = 8,
+    ITEM_SUBCLASS_GEM_HYDRAULIC                 = 9,
+    ITEM_SUBCLASS_GEM_COGWHEEL                  = 10
 };
 
-#define MAX_ITEM_SUBCLASS_GEM                     9
+#define MAX_ITEM_SUBCLASS_GEM                     11
 
 enum ItemSubclassArmor
 {
@@ -327,10 +331,11 @@ enum ItemSubclassArmor
     ITEM_SUBCLASS_ARMOR_LIBRAM                  = 7,
     ITEM_SUBCLASS_ARMOR_IDOL                    = 8,
     ITEM_SUBCLASS_ARMOR_TOTEM                   = 9,
-    ITEM_SUBCLASS_ARMOR_SIGIL                   = 10
+    ITEM_SUBCLASS_ARMOR_SIGIL                   = 10,
+    ITEM_SUBCLASS_ARMOR_RELIC                   = 11
 };
 
-#define MAX_ITEM_SUBCLASS_ARMOR                   11
+#define MAX_ITEM_SUBCLASS_ARMOR                   12
 
 enum ItemSubclassReagent
 {
@@ -391,10 +396,11 @@ enum ItemSubclassRecipe
     ITEM_SUBCLASS_FIRST_AID_MANUAL              = 7,
     ITEM_SUBCLASS_ENCHANTING_FORMULA            = 8,
     ITEM_SUBCLASS_FISHING_MANUAL                = 9,
-    ITEM_SUBCLASS_JEWELCRAFTING_RECIPE          = 10
+    ITEM_SUBCLASS_JEWELCRAFTING_RECIPE          = 10,
+    ITEM_SUBCLASS_INSCRIPTION                   = 11
 };
 
-#define MAX_ITEM_SUBCLASS_RECIPE                  11
+#define MAX_ITEM_SUBCLASS_RECIPE                  12
 
 enum ItemSubclassMoney
 {
@@ -458,6 +464,7 @@ enum ItemSubclassGlyph
     ITEM_SUBCLASS_GLYPH_SHAMAN                  = 7,
     ITEM_SUBCLASS_GLYPH_MAGE                    = 8,
     ITEM_SUBCLASS_GLYPH_WARLOCK                 = 9,
+    ITEM_SUBCLASS_GLYPH_MONK                    = 10,
     ITEM_SUBCLASS_GLYPH_DRUID                   = 11
 };
 
