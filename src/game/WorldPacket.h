@@ -30,7 +30,7 @@ class WorldPacket : public ByteBuffer
     public:
 
         // just container for later use
-        WorldPacket()                                       : ByteBuffer(0), m_opcode(0)
+        WorldPacket() : ByteBuffer(0), m_opcode(0)
         {
         }
                                                             // just container for later use

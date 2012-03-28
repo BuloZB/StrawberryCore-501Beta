@@ -155,4 +155,8 @@ void InitOpcodeTable()
 
     // Movement
     OPCODE(SMSG_PLAYER_MOVE,                  STATUS_AUTHED,   PROCESS_INPLACE,      &WorldSession::HandleServerSide              );
+
+    OPCODE(SMSG_TUTORIAL_FLAGS,               STATUS_NEVER,   PROCESS_INPLACE,      &WorldSession::HandleServerSide              );
+    OPCODE(SMSG_CLIENTCACHE_VERSION,          STATUS_NEVER,   PROCESS_INPLACE,      &WorldSession::HandleServerSide              );
+    OPCODE(SMSG_WARDEN_DATA,          STATUS_NEVER,   PROCESS_INPLACE,      &WorldSession::HandleServerSide              );
 };

@@ -63,9 +63,10 @@ struct ServerPktHeader
             DEBUG_LOG("initializing large server to client packet. Size: %u, cmd: %u", size, cmd);
             header[headerIndex++] = 0x80 | (0xFF & (size >> 16));
         }
-        header[headerIndex++] = 0xFF & (size >> 8);
-        header[headerIndex++] = 0xFF & size;
 
+        header[headerIndex++] = 0xFF & size;
+        header[headerIndex++] = 0xFF & (size >> 8);
+        
         header[headerIndex++] = 0xFF & cmd;
         header[headerIndex++] = 0xFF & (cmd >> 8);
     }
@@ -80,7 +81,7 @@ struct ServerPktHeader
     {
         return size > 0x7FFF;
     }
-
+     
     const uint32 size;
     uint8 header[5];
 };
@@ -111,7 +112,7 @@ m_OutActive(false),
 m_Seed(static_cast<uint32>(rand32()))
 {
     reference_counting_policy().value(ACE_Event_Handler::Reference_Counting_Policy::ENABLED);
-
+    
     msg_queue()->high_water_mark(8*1024*1024);
     msg_queue()->low_water_mark(8*1024*1024);
 }
@@ -244,8 +245,8 @@ int WorldSocket::open(void *a)
 
     m_Address = remote_addr.get_host_addr();
 
-    std::string ServerToClient = "D OF WARCRAFT CONNECTION - SERVER TO CLIENT";
-    WorldPacket data(0x4C524F57, 46);
+    std::string ServerToClient = "RLD OF WARCRAFT CONNECTION - SERVER TO CLIENT";
+    WorldPacket data(MSG_WOW_CONNECTION, 46);
 
     data << ServerToClient;
 
@@ -254,6 +255,9 @@ int WorldSocket::open(void *a)
 
     // Send startup packet.
     WorldPacket packet(SMSG_AUTH_CHALLENGE, 37);
+
+    packet << uint8(0);
+    packet << uint8(0);
 
     for (uint32 i = 0; i < 8; i++)
         packet << uint32(0);
@@ -484,10 +488,8 @@ int WorldSocket::handle_input_header(void)
     STRAWBERRY_ASSERT(m_Header.length() == sizeof(ClientPktHeader));
 
     m_Crypt.DecryptRecv((uint8*)m_Header.rd_ptr(), sizeof(ClientPktHeader));
-
     ClientPktHeader &header = *((ClientPktHeader*)m_Header.rd_ptr());
 
-    EndianConvertReverse(header.size);
     EndianConvert(header.cmd);
 
     if ((header.size < 4) || (header.size > 10240))
